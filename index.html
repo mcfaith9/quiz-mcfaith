@@ -1,87 +1,112 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta content="width=device-width, initial-scale=1" name="viewport" />
-	<title>Project Quiz</title>
-	<!-- <link rel="shortcut icon" href="assets/images/favicon.ico" type="image/x-icon"> -->
-	<!-- <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon"> -->
-	<link rel="stylesheet" type="text/css" href="assets/css/quiz.css">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" integrity="sha512-P9vJUXK+LyvAzj8otTOKzdfF1F3UYVl13+F8Fof8/2QNb8Twd6Vb+VD52I7+87tex9UXxnzPgWA3rH96RExA7A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <title></title>
+  <link rel="stylesheet" href="assets/css/style.css">
 </head>
-<body>
-	<div class="quizArea">
-	  <div class="multipleChoiceQues">
-	  <h1 class="mc_quiz">
-	    Quiz
-	  </h1>
-	    <div class="my-progress">
-	        <progress class="my-progress-bar" min="0" max="100" value="0" step="9" aria-labelledby="my-progress-completion"></progress>    
-	        <p id="my-progress-completion" class="js-my-progress-completion sr-only" aria-live="polite">0% complete</p>
-	    </div>
-	    <div class="quizBox">
-	      <div class="question"> </div>
-	      <div class="answerOptions"></div>
-	      <div class="buttonArea">
-	        <button id="next"  class="hidden btn btn-primary">Next</button>
-	        <button id="submit"  class="hidden btn btn-primary">Submit</button>
-	      </div>
-	    </div>
-	  </div>
-	  <div class="resultArea">  
-	    <div class="resultPage1">
-	      <div class="resultBox">
-	        <h1>Result Summary</h1>
-	      </div>
-	      <div class="briefchart">
-	        <svg height="300" width="300" id="_cir_progress">
-	          <g>
-	            <rect x="0" y="1" width="30" height="15"  fill="#ab4e6b" />
-	            <text x="32" y="14" font-size="14"  class="_text_incor">Incorrect : 12 </text>
-	          </g>
-	          <g>
-	            <rect x="160" y="1" width="30" height="15"  fill="#968089" />
-	            <text x="192" y="14" font-size="14" class="_text_cor">Correct : 12</text>
-	         </g>          
-	          <circle class="_cir_P_x" cx="150" cy="150" r="120" stroke="#ab4e6b" stroke-width="20" fill="none" onmouseover="evt.target.setAttribute('stroke', 'rgba(171, 78, 107,0.7)');" onmouseout="evt.target.setAttribute('stroke','#ab4e6b');"></circle>
+<body id="fx-respond">
+  <div id="container">
+    <div id="content" class="fx-tiles">
+      <!-- FULL WIDTH LAYOUT -->
+      <div class="fx-grid fx-cf">
+        <div class="fx-col">
+          <!-- ADD BLOCK(S) HERE -->
+          <!-- START: SHARE BLOCK -->
+          <div class="fx-block fx-purple fx-share fx-align-left fx-cf purple-bg" style="padding:20px ">
+            <div class="fx-copy" style="padding-left:20px; padding-bottom:0">
+              <h2>Is mcfaith handsome</h2>
+              <p>Do you think he is handsome?</p>
+              <p><a href="#game" id="start-button" class="fx-btn">Play now</a></p>
+            </div>
+          </div>
+        </div>
+        <!-- FULL WIDTH LAYOUT -->
+        <div class="fx-grid fx-cf">
+          <div class="fx-col">
+            <!-- ADD BLOCK(S) HERE -->
+            <div class="fx-block game-container">
+              <div id="game">
+                <div class="game-grid">
+                  <p id="timer" class="timer">
+                    1:00:00
+                  </p>
+                  <div class="game-left-col">
+                    <div class="gauge-container" style="background: #ffffff url('images/icon-01.svg') no-repeat center center; background-size: 100px 100px;">
+                      <canvas id="gauge" class="gauge" width="240" height="240"></canvas>
+                      <div class="score-number">0</div>
+                    </div>
+                  </div>
+                  <div class="game-right-col">
+                    <div class="questions">
+                      <div class="question">
+                        <p><span class="number">1 </span><span class="questionText">Do you agree is mcfaith handsome?</span></p>
+                        <div class="answers">
+                          <label><input type="checkbox" class="answer" data-i="1" data-correct="false"><span class="text">A. No</span></label>
+                          <label><input type="checkbox" class="answer" data-i="2" data-correct="false"><span class="text">B. Maybe</span></label>
+                          <label><input type="checkbox" class="answer" data-i="3" data-correct="true"><span class="text">C. Absolutely Yes</span></label>
+                        </div>
+                      </div>
+                      <div class="question">
+                        <p><span class="number">2 </span><span class="questionText">Who is most handsome of them?</span></p>
+                        <div class="answers">
+                          <label><input type="checkbox" class="answer" data-correct="false"><span class="text">A. James Reid</span></label>
+                          <label><input type="checkbox" class="answer" data-correct="false"><span class="text">B. Daniel Padilla</span></label>
+                          <label><input type="checkbox" class="answer" data-correct="true"><span class="text">C. mcfaith</span></label>
+                        </div>
+                      </div>
+                      <div class="question">
+                        <p><span class="number">3 </span><span class="questionText">Are you sure for the 2nd time that mcfaith is handsome? 
+                        </span></p>
+                        <div class="answers">
+                         <label><input type="checkbox" class="answer" data-correct="true"><span class="text">A. Yes</span></label>
+                          <label><input type="checkbox" class="answer" data-correct="false"><span class="text">B.  No</span></label>
+                        </div>
+                      </div>
+                      <div class="question">
+                        <p><span class="number">4 </span><span class="questionText">Do you think you can surpass his handsomeness?</span></p>
+                        <div class="answers">
+                          <label><input type="checkbox" class="answer" data-correct="false"><span class="text">A. Yes Absolutely</span></label>
+                          <label><input type="checkbox" class="answer" data-correct="true"><span class="text">B. No I am weakling</span></label>
+                          <label><input type="checkbox" class="answer" data-correct="false"><span class="text">C.  Maybe, But im just 2nd to him</span></label>
+                        </div>
+                      </div>
+                    </div>
+                    <div id="game-end-times-up">
+                      <p id="time-out-text" class="game-end-text"></p>
+                      <a href="./challenge-page.html" class="fx-btn">Play again</a>
 
-	          <circle class="_cir_P_y" cx="150" cy="150" r="120" stroke="#968089" stroke-width="20"  stroke-dasharray="0,1000" fill="none"  onmouseover="evt.target.setAttribute('stroke', 'rgba(150, 128, 137,0.7)');" onmouseout="evt.target.setAttribute('stroke','#968089');"></circle>
-	          <text x="50%" y="50%" text-anchor="middle" stroke="none" stroke-width="1px" dy=".3em" class="_cir_Per">0%</text>
-	          </svg>
-	      </div>
-
-	      <div class="resultBtns">
-	      	<button class="btn btn-primary leaderboard">Leaderboard</button>
-	        <button class="btn btn-primary viewanswer">View Answers</button>
-	        <button class="btn btn-primary viewchart">View Chart</button>
-	        <button class="btn btn-primary replay">Replay</button>
-	      </div>
-	    </div>
-
-	    <div class="resultPage2">
-	      <h1>Your Result</h1>
-	      <div class="chartBox">
-	        <canvas id="myChart" width="400" height="400"></canvas>
-	      </div>
-	      <button class="backBtn">Back</button>
-	    </div>
-
-	    <div class="resultPage3">
-	      <h1>Your Answers</h1>
-	      <div class="allAnswerBox">
-	        
-	      </div>
-	      <button class="backBtn">Back</button>
-	    </div>
-
-	  </div>
-	</div>
-	
-	
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" crossorigin="anonymous"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.js" crossorigin="anonymous"></script>
-	<!-- <script type="text/javascript" src="https://raw.githubusercontent.com/emn178/Chart.PieceLabel.js/master/src/Chart.PieceLabel.js"></script> -->
-	<script type="text/javascript" src="assets/js/quiz.js"></script>
+                    </div>
+                    <div id="game-end">
+                      <p id="game-end-text" class="game-end-text"></p>
+                      <a href="#" class="fx-btn">Leaderboard</a>
+                      <a href="#" class="fx-btn">View Answer</a>
+                      <a href="./challenge-page.html" class="fx-btn">Play again</a>
+                    </div>
+                  </div>
+                </div>
+                <div id="progress-bar" class="progress-bar">
+                  <div class="indicator current"></div>
+                  <div class="indicator"></div>
+                  <div class="indicator"></div>
+                  <div class="indicator"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>  
+      </div>  
+    </div>
+  </div>  
+  <!-- GLOBAL WRAPPER CSS -->
+  <link rel="stylesheet" type="text/css" href="https://www.fedex.com/css/t2/global-wrapper-min.css" id="globalCSS" />
+  <!-- MASTER RESPONSIVE CSS -->
+  <link rel="stylesheet" type="text/css" href="https://www.fedex.com/css/t2/master-responsive-min.css" />
+  <!-- MASTER RESPONSIVE JAVASCRIPT (Keep below footer include) -->
+  <script type="text/javascript" src="https://images.fedex.com/templates/components/libraries/1.0/jQuery/1.7.2/jquery.min.js"></script>
+  <script type="text/javascript" src="https://www.fedex.com/templates/components/javascript/v2/fx-master-responsive.js"></script>
+  <script type="text/javascript" src="assets/js/script.js"></script>
 </body>
 </html>
