@@ -17,11 +17,25 @@
           <!-- ADD BLOCK(S) HERE -->
           <!-- START: SHARE BLOCK -->
           <div class="fx-block fx-purple fx-share fx-align-left fx-cf purple-bg" style="padding:20px ">
-            <div class="container">
-              <div class="fx-copy" style="padding-left:20px; padding-bottom:0">
-                <h2>This is a quiz title</h2>
-                <p>You have 15 mins to answer 12 questions (for demo only 4 questions)</p>
-                <p><a href="#game" id="start-button" class="fx-btn btn btn-dark">Start Now</a></p>
+            <div class="container" style="padding-left:20px; padding-bottom:0">
+              <div class="col-md-4">
+                <h2 class="white">Nexus Quiz</h2>
+                <p class="white">You have 15 mins to answer 12 questions (for demo only 4 questions)</p>
+                <div class="collapse" id="user-info-wrapper">                  
+                  <div class="form-group">
+                    <label class="white" for="fullname">Password</label>
+                    <input type="text" class="form-control" id="fullname" placeholder="Full Name" required>
+                  </div>
+                  <div class="form-group">
+                    <label class="white" for="emailaddress">Email address</label>
+                    <input type="email" class="form-control" id="emailaddress" aria-describedby="emailHelp" placeholder="Enter email" required pattern="^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$">
+                    <small id="emailHelp" class="form-text text-muted" style="color: #fff!important;">We'll never share your email with anyone else.</small>
+                  </div>
+                  <br>
+                </div>
+                <p><a id="start-quiz" class="btn btn-dark" data-toggle="collapse" href="#user-info-wrapper" role="button" aria-expanded="false" aria-controls="user-info-wrapper" style="width:100%;">Start Quiz</a></p>
+                <p><a href="#game" id="start-button" class="btn btn-dark disabled" aria-disabled="true" style="width:100%;display:none;">Start Game</a></p>
+                <p><a href="#" class="btn btn-dark" style="width:100%;">Leaderboard</a></p>
               </div>
             </div>
           </div>
@@ -32,11 +46,13 @@
             <!-- ADD BLOCK(S) HERE -->
             <div class="fx-block game-container">
               <div id="game">                  
-                <div class="game-grid">
-                  <p id="timer" class="timer">
-                    1:00:00
-                  </p>
+                <div class="game-grid">                  
                   <div class="container">
+                    <p id="timer" class="timer justify-content-center border rounded-pill" style="display: inline-block; width: 50%;">
+                      1:00:00
+                    </p>
+                    <br>
+                    <br>
                     <div class="row">
                       <div class="game-left-col col-md-6 col-md-sm-6">
                         <div class="gauge-container" style="background-size: 100px 100px;">
@@ -47,35 +63,52 @@
                       <div class="game-right-col col-md-6 col-md-sm-6">
                         <div class="questions">
                           <div class="question">
-                            <p><span class="number">1 </span><span class="questionText">Do you agree is mcfaith handsome?</span></p>
+                            <p><span class="number">1 </span><span class="questionText">Which is the planet nearest to the sun?</span></p>
                             <div class="answers">
-                              <label><input type="checkbox" class="answer" data-i="1" data-correct="false"><span class="text">A. No</span></label>
-                              <label><input type="checkbox" class="answer" data-i="2" data-correct="false"><span class="text">B. Maybe</span></label>
-                              <label><input type="checkbox" class="answer" data-i="3" data-correct="true"><span class="text">C. Absolutely Yes</span></label>
+                              <label><input type="checkbox" class="answer" data-i="1" data-correct="false"><span class="text">A. Earth</span></label>
+                              <label><input type="checkbox" class="answer" data-i="2" data-correct="false"><span class="text">B. Mars</span></label>
+                              <label><input type="checkbox" class="answer" data-i="3" data-correct="true"><span class="text">C. Mercury</span></label>
                             </div>
                           </div>
                           <div class="question">
-                            <p><span class="number">2 </span><span class="questionText">Who is most handsome of them?</span></p>
+                            <p><span class="number">2 </span><span class="questionText">Which is the planet farthest from the sun?</span></p>
                             <div class="answers">
-                              <label><input type="checkbox" class="answer" data-i="1" data-correct="false"><span class="text">A. James Reid</span></label>
-                              <label><input type="checkbox" class="answer" data-i="2" data-correct="false"><span class="text">B. Daniel Padilla</span></label>
-                              <label><input type="checkbox" class="answer" data-i="3" data-correct="true"><span class="text">C. mcfaith</span></label>
+                              <label><input type="checkbox" class="answer" data-i="1" data-correct="false"><span class="text">A. Uranus</span></label>
+                              <label><input type="checkbox" class="answer" data-i="2" data-correct="false"><span class="text">B. Jupiter</span></label>
+                              <label><input type="checkbox" class="answer" data-i="3" data-correct="true"><span class="text">C. Neptune</span></label>
                             </div>
                           </div>
                           <div class="question">
-                            <p><span class="number">3 </span><span class="questionText">Are you sure for the 2nd time that mcfaith is handsome? 
+                            <p><span class="number">3 </span><span class="questionText"> ______ is the hottest planet of our solar system. 
                             </span></p>
                             <div class="answers">
-                              <label><input type="checkbox" class="answer" data-i="1" data-correct="true"><span class="text">A. Yes</span></label>
-                              <label><input type="checkbox" class="answer" data-i="2" data-correct="false"><span class="text">B.  No</span></label>
+                              <label><input type="checkbox" class="answer" data-i="1" data-correct="true"><span class="text">A. Venus</span></label>
+                              <label><input type="checkbox" class="answer" data-i="2" data-correct="false"><span class="text">B. Mercury</span></label>
+                              <label><input type="checkbox" class="answer" data-i="3" data-correct="false"><span class="text">B. Jupiter</span></label>
                             </div>
                           </div>
                           <div class="question">
-                            <p><span class="number">4 </span><span class="questionText">Do you think you can surpass his handsomeness?</span></p>
+                            <p><span class="number">4 </span><span class="questionText">Which is the smallest planet of our solar system?</span></p>
                             <div class="answers">
-                              <label><input type="checkbox" class="answer" data-i="1" data-correct="false"><span class="text">A. Yes Absolutely</span></label>
-                              <label><input type="checkbox" class="answer" data-i="2" data-correct="true"><span class="text">B. No I am weakling</span></label>
-                              <label><input type="checkbox" class="answer" data-i="3" data-correct="false"><span class="text">C.  Maybe, But im just 2nd to him</span></label>
+                              <label><input type="checkbox" class="answer" data-i="1" data-correct="false"><span class="text">A. Uranus</span></label>
+                              <label><input type="checkbox" class="answer" data-i="2" data-correct="true"><span class="text">B. Mercury</span></label>
+                              <label><input type="checkbox" class="answer" data-i="3" data-correct="false"><span class="text">C. Mars</span></label>
+                            </div>
+                          </div>
+                          <div class="question">
+                            <p><span class="number">5 </span><span class="questionText">Which of these is the coldest planet of our solar system?</span></p>
+                            <div class="answers">
+                              <label><input type="checkbox" class="answer" data-i="1" data-correct="false"><span class="text">A. Saturn</span></label>
+                              <label><input type="checkbox" class="answer" data-i="2" data-correct="false"><span class="text">B. Jupiter</span></label>
+                              <label><input type="checkbox" class="answer" data-i="3" data-correct="true"><span class="text">C. Neptune</span></label>
+                            </div>
+                          </div>
+                          <div class="question">
+                            <p><span class="number">6 </span><span class="questionText">______ is called the “Red Planet” of our solar system.</span></p>
+                            <div class="answers">
+                              <label><input type="checkbox" class="answer" data-i="1" data-correct="true"><span class="text">A. Mars</span></label>
+                              <label><input type="checkbox" class="answer" data-i="2" data-correct="false"><span class="text">B. Mercury</span></label>
+                              <label><input type="checkbox" class="answer" data-i="3" data-correct="false"><span class="text">C. Venus</span></label>
                             </div>
                           </div>
                         </div>
@@ -96,6 +129,8 @@
                 </div>
                 <div id="progress-bar" class="progress-bar-custom">
                   <div class="indicator current"></div>
+                  <div class="indicator"></div>
+                  <div class="indicator"></div>
                   <div class="indicator"></div>
                   <div class="indicator"></div>
                   <div class="indicator"></div>

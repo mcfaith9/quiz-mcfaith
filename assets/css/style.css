@@ -1,3 +1,9 @@
+html, body {
+    margin-right: -4px; /*COMPENSATES THE VERTICAL SCROLLBAR*/
+    overflow-x: hidden; /*REMOVES HORIZONTAL SCROLLBAR THE ABOVE CREATES*/
+    margin-top: 0px; /*COMPENSATES THE HORIZONTAL SCROLLBAR*/
+}
+
 form {
 color:#fff;
 } 
@@ -10,9 +16,6 @@ background-color: #157bcc!important;
 color:#fff;
 }
 
-input {
-height:25px;
-}
 .fx-block.fx-share > .bill-icon {
 vertical-align: top;
 padding-top: 15px;
@@ -187,4 +190,7 @@ text-decoration: none;
 }
 .fx-btn:link, .fx-btn:visited, .fx-btn:hover, .fx-btn:active {
 text-decoration: none;
+}
+.white {
+  color: #fff!important;
 }

@@ -5,6 +5,7 @@ var game = {
   // state and jquery selectors
   state: {
     startButton: $("#start-button"),
+    credentialsButton: $("#start-quiz"),
     viewLeaderBoard: $("#leaderboard"),
     viewAnswer: $("#viewanswer"),
     gameContainer: $("#game"),
@@ -22,6 +23,7 @@ var game = {
     timer: $("#timer"),
     indicators: $(".indicator"),
     numberOfQuestions: $(".question").length,
+    fullname: $("#fullname"),
     questionsAnswered: 0,
     correctAnswers: 0,
     correctPoints: 100,
@@ -38,12 +40,23 @@ var game = {
       //e.preventDefault();
       game.checkAnswer($(this));
     });
-
-    game.state.startButton.on("click touch", function(e) {
+    game.state.credentialsButton.on("click touch", function(e) {
       e.preventDefault();
+      $("#start-quiz").remove();
+      $("#start-button").show();
+      
+      $(".form-control").keyup(function(){
+        if($("#fullname").val().length != 0 && $("#emailaddress").val().length != 0){
+          $("#start-button").attr('disabled', false).removeClass("disabled");
+        }
+      });
+    });
+    game.state.startButton.on("click touch", function(e) {
+      e.preventDefault();      
+      $(this).attr('disabled', true).addClass("disabled");
+      $("#user-info-wrapper").collapse("hide");
       game.start();
     });
-
     game.state.viewAnswer.on("click touch", function(e) {
       e.preventDefault();
       $(".preview-wrapper").html('');
@@ -222,13 +235,14 @@ var game = {
   },
 
   endGame: function() {
+    const uppercaseWords = str => str.replace(/^(.)|\s+(.)/g, c => c.toUpperCase());
     var endText =
       'You got<br><span class="score">' +
       game.state.correctAnswers +
       " out of " +
       game.state.numberOfQuestions +
-      "</span><br> correct"+
-      "<br> earn <span class='score'>"+game.state.score+"</span> points.";
+      "</span><br> correct answer"+
+      "<br>"+uppercaseWords(game.state.fullname.val())+" you earn <span class='score'>"+game.state.score+"</span> points.";
 
       game.state.questionsView.fadeOut(400, function() {
       game.state.gameEndText[0].innerHTML = endText;  
