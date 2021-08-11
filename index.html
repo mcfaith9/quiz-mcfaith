@@ -4,8 +4,9 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta content="width=device-width, initial-scale=1" name="viewport" />
-  <title></title>
+  <title>Quiz</title>
   <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
 </head>
 <body id="fx-respond">
   <div id="container">
@@ -16,10 +17,12 @@
           <!-- ADD BLOCK(S) HERE -->
           <!-- START: SHARE BLOCK -->
           <div class="fx-block fx-purple fx-share fx-align-left fx-cf purple-bg" style="padding:20px ">
-            <div class="fx-copy" style="padding-left:20px; padding-bottom:0">
-              <h2>Is mcfaith handsome</h2>
-              <p>Do you think he is handsome?</p>
-              <p><a href="#game" id="start-button" class="fx-btn">Play now</a></p>
+            <div class="container">
+              <div class="fx-copy" style="padding-left:20px; padding-bottom:0">
+                <h2>This is a quiz title</h2>
+                <p>You have 15 mins to answer 12 questions (for demo only 4 questions)</p>
+                <p><a href="#game" id="start-button" class="fx-btn btn btn-dark">Start Now</a></p>
+              </div>
             </div>
           </div>
         </div>
@@ -28,71 +31,83 @@
           <div class="fx-col">
             <!-- ADD BLOCK(S) HERE -->
             <div class="fx-block game-container">
-              <div id="game">
+              <div id="game">                  
                 <div class="game-grid">
                   <p id="timer" class="timer">
                     1:00:00
                   </p>
-                  <div class="game-left-col">
-                    <div class="gauge-container" style="background-size: 100px 100px;">
-                      <canvas id="gauge" class="gauge" width="240" height="240"></canvas>
-                      <div class="score-number">0</div>
-                    </div>
-                  </div>
-                  <div class="game-right-col">
-                    <div class="questions">
-                      <div class="question">
-                        <p><span class="number">1 </span><span class="questionText">Do you agree is mcfaith handsome?</span></p>
-                        <div class="answers">
-                          <label><input type="checkbox" class="answer" data-i="1" data-correct="false"><span class="text">A. No</span></label>
-                          <label><input type="checkbox" class="answer" data-i="2" data-correct="false"><span class="text">B. Maybe</span></label>
-                          <label><input type="checkbox" class="answer" data-i="3" data-correct="true"><span class="text">C. Absolutely Yes</span></label>
+                  <div class="container">
+                    <div class="row">
+                      <div class="game-left-col col-md-6 col-md-sm-6">
+                        <div class="gauge-container" style="background-size: 100px 100px;">
+                          <canvas id="gauge" class="gauge" width="240" height="240"></canvas>
+                          <div class="score-number">0</div>
                         </div>
                       </div>
-                      <div class="question">
-                        <p><span class="number">2 </span><span class="questionText">Who is most handsome of them?</span></p>
-                        <div class="answers">
-                          <label><input type="checkbox" class="answer" data-i="1" data-correct="false"><span class="text">A. James Reid</span></label>
-                          <label><input type="checkbox" class="answer" data-i="2" data-correct="false"><span class="text">B. Daniel Padilla</span></label>
-                          <label><input type="checkbox" class="answer" data-i="3" data-correct="true"><span class="text">C. mcfaith</span></label>
+                      <div class="game-right-col col-md-6 col-md-sm-6">
+                        <div class="questions">
+                          <div class="question">
+                            <p><span class="number">1 </span><span class="questionText">Do you agree is mcfaith handsome?</span></p>
+                            <div class="answers">
+                              <label><input type="checkbox" class="answer" data-i="1" data-correct="false"><span class="text">A. No</span></label>
+                              <label><input type="checkbox" class="answer" data-i="2" data-correct="false"><span class="text">B. Maybe</span></label>
+                              <label><input type="checkbox" class="answer" data-i="3" data-correct="true"><span class="text">C. Absolutely Yes</span></label>
+                            </div>
+                          </div>
+                          <div class="question">
+                            <p><span class="number">2 </span><span class="questionText">Who is most handsome of them?</span></p>
+                            <div class="answers">
+                              <label><input type="checkbox" class="answer" data-i="1" data-correct="false"><span class="text">A. James Reid</span></label>
+                              <label><input type="checkbox" class="answer" data-i="2" data-correct="false"><span class="text">B. Daniel Padilla</span></label>
+                              <label><input type="checkbox" class="answer" data-i="3" data-correct="true"><span class="text">C. mcfaith</span></label>
+                            </div>
+                          </div>
+                          <div class="question">
+                            <p><span class="number">3 </span><span class="questionText">Are you sure for the 2nd time that mcfaith is handsome? 
+                            </span></p>
+                            <div class="answers">
+                              <label><input type="checkbox" class="answer" data-i="1" data-correct="true"><span class="text">A. Yes</span></label>
+                              <label><input type="checkbox" class="answer" data-i="2" data-correct="false"><span class="text">B.  No</span></label>
+                            </div>
+                          </div>
+                          <div class="question">
+                            <p><span class="number">4 </span><span class="questionText">Do you think you can surpass his handsomeness?</span></p>
+                            <div class="answers">
+                              <label><input type="checkbox" class="answer" data-i="1" data-correct="false"><span class="text">A. Yes Absolutely</span></label>
+                              <label><input type="checkbox" class="answer" data-i="2" data-correct="true"><span class="text">B. No I am weakling</span></label>
+                              <label><input type="checkbox" class="answer" data-i="3" data-correct="false"><span class="text">C.  Maybe, But im just 2nd to him</span></label>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                      <div class="question">
-                        <p><span class="number">3 </span><span class="questionText">Are you sure for the 2nd time that mcfaith is handsome? 
-                        </span></p>
-                        <div class="answers">
-                         <label><input type="checkbox" class="answer" data-i="1" data-correct="true"><span class="text">A. Yes</span></label>
-                          <label><input type="checkbox" class="answer" data-i="2" data-correct="false"><span class="text">B.  No</span></label>
+                        <div id="game-end-times-up">
+                          <p id="time-out-text" class="game-end-text"></p>
+                          <a href="#" class="fx-btn btn btn-outline-primary play-again">Play again</a>
                         </div>
-                      </div>
-                      <div class="question">
-                        <p><span class="number">4 </span><span class="questionText">Do you think you can surpass his handsomeness?</span></p>
-                        <div class="answers">
-                          <label><input type="checkbox" class="answer" data-i="1" data-correct="false"><span class="text">A. Yes Absolutely</span></label>
-                          <label><input type="checkbox" class="answer" data-i="2" data-correct="true"><span class="text">B. No I am weakling</span></label>
-                          <label><input type="checkbox" class="answer" data-i="3" data-correct="false"><span class="text">C.  Maybe, But im just 2nd to him</span></label>
-                        </div>
-                      </div>
-                    </div>
-                    <div id="game-end-times-up">
-                      <p id="time-out-text" class="game-end-text"></p>
-                      <a href="./challenge-page.html" class="fx-btn">Play again</a>
 
-                    </div>
-                    <div id="game-end">
-                      <p id="game-end-text" class="game-end-text"></p>
-                      <a href="#" class="fx-btn" id="leaderboard">Leaderboard</a>
-                      <a href="#" class="fx-btn" id="viewanswer">View Answer</a>
-                      <a href="#" class="fx-btn" id="play-again">Play again</a>
-                    </div>
+                        <div id="game-end">
+                          <p id="game-end-text" class="game-end-text"></p>
+                          <a href="#" class="fx-btn btn btn-outline-primary" id="leaderboard">Leaderboard</a>
+                          <a class="fx-btn btn btn-outline-primary" id="viewanswer" data-toggle="collapse" href="#collapsePreview" role="button" aria-expanded="false" aria-controls="collapsePreview">View Answer</a>
+                          <a href="#" class="fx-btn btn btn-outline-primary play-again" id="play-again">Play again</a>
+                        </div>                        
+                      </div>
+                    </div>                    
                   </div>
                 </div>
-                <div id="progress-bar" class="progress-bar">
+                <div id="progress-bar" class="progress-bar-custom">
                   <div class="indicator current"></div>
                   <div class="indicator"></div>
                   <div class="indicator"></div>
                   <div class="indicator"></div>
                 </div>
+                <br>                             
+              </div>
+              <div class="collapse" id="collapsePreview">
+                <div class="card card-body preview-wrapper">
+                </div>
+                <br>
+                <br>
+                <br>
               </div>
             </div>
           </div>
@@ -101,12 +116,13 @@
     </div>
   </div>  
   <!-- GLOBAL WRAPPER CSS -->
-  <link rel="stylesheet" type="text/css" href="https://www.fedex.com/css/t2/global-wrapper-min.css" id="globalCSS" />
+  <!-- <link rel="stylesheet" type="text/css" href="assets/css/global-wrapper-min.css" id="globalCSS" /> -->
   <!-- MASTER RESPONSIVE CSS -->
-  <link rel="stylesheet" type="text/css" href="https://www.fedex.com/css/t2/master-responsive-min.css" />
+  <!-- <link rel="stylesheet" type="text/css" href="assets/css/master-responsive-min.css" /> -->
   <!-- MASTER RESPONSIVE JAVASCRIPT (Keep below footer include) -->
-  <script type="text/javascript" src="https://images.fedex.com/templates/components/libraries/1.0/jQuery/1.7.2/jquery.min.js"></script>
-  <script type="text/javascript" src="https://www.fedex.com/templates/components/javascript/v2/fx-master-responsive.js"></script>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="assets/js/fx-master-responsive.js"></script>
   <script type="text/javascript" src="assets/js/script.js"></script>
 </body>
 </html>

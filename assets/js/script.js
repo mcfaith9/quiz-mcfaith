@@ -4,9 +4,10 @@ var game = {
   state: {
     startButton: $("#start-button"),
     viewLeaderBoard: $("#leaderboard"),
-    viewAnswer: $("viewanswer"),
+    viewAnswer: $("#viewanswer"),
     gameContainer: $("#game"),
-    playAgain: $("#play-again"),
+    previewContainer: $(".preview-wrapper"),
+    playAgain: $(".play-again"),
     scoreNumber: $(".score-number"),
     questionsView: $(".questions"),
     gameEndView: $("#game-end"),
@@ -38,12 +39,14 @@ var game = {
       game.start();
     });
 
-    game.state.viewLeaderBoard.on("click touch", function(e) {
+    game.state.viewAnswer.on("click touch", function(e) {
       e.preventDefault();
+      $(".question").clone().appendTo(".preview-wrapper").removeAttr('style').css({"display": "block"});;
       game.viewSelectedAnswer(selectedAnswer);
     });
     game.state.playAgain.on("click touch", function(e) {
       e.preventDefault();
+      window.location.reload(true);
     });
   },
 
@@ -66,7 +69,7 @@ var game = {
     var count = 0;
 
     var interval = window.setInterval(function() {
-      var centisecondsRemaining = 2000 - count;
+      var centisecondsRemaining = 90000 - count;
       var min = Math.floor(centisecondsRemaining / 100 / 60);
       var sec = zeroFill(Math.floor(centisecondsRemaining / 100 % 60));
       var cs = zeroFill(centisecondsRemaining % 100);
@@ -184,7 +187,7 @@ var game = {
       }
     }   
   },
-  viewSelectedAnswer: function(data){
+  viewSelectedAnswer: function(data){    
     console.log(data);
   },
   goToNextQuestion: function() {
