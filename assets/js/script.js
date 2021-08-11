@@ -1,5 +1,6 @@
 var selectedAnswer = [];
-var points;
+var arrayPoints = [];
+var points = 0;
 var game = {
   // state and jquery selectors
   state: {
@@ -22,7 +23,10 @@ var game = {
     indicators: $(".indicator"),
     numberOfQuestions: $(".question").length,
     questionsAnswered: 0,
-    correctAnswers: 0
+    correctAnswers: 0,
+    correctPoints: 100,
+    timePoints: 0,
+    score: 0,
   },
 
   init: function() {
@@ -76,6 +80,7 @@ var game = {
       var sec = zeroFill(Math.floor(centisecondsRemaining / 100 % 60));
       var cs = zeroFill(centisecondsRemaining % 100);
       game.state.timer.text(min + ":" + sec + ":" + cs);
+      game.state.timePoints = centisecondsRemaining;
       count++;
       if (centisecondsRemaining === 0) {
         clearInterval(interval);
@@ -96,14 +101,15 @@ var game = {
       game.state.correctAnswers++;
       game.drawGaugeValue();
       game.updateProgress(true);
+      game.state.score = points += 100;
       // game.giveAnswerFeedback(answer);
     } else {
       game.updateProgress(false);
+      game.state.score = points -= 100;
       // game.giveAnswerFeedback(answer);
     }
     game.giveAnswerFeedback(answer);
     game.state.questionsAnswered++;
-
     // wait a second
     window.setTimeout(function() {
       //end game else go to next question
@@ -114,8 +120,14 @@ var game = {
       }
     }, 1000);
 
-    var data = selectedAnswer.push(answer.data().i);  
+    var data = selectedAnswer.push(answer.data().i);     
     game.viewSelectedAnswer(selectedAnswer);
+
+    game.score(game.state.score);
+  },
+
+  score: function(points){
+    console.log('points', points);
   },
 
   drawGaugeValue: function() {
@@ -191,7 +203,7 @@ var game = {
     }   
   },
   viewSelectedAnswer: function(data){    
-    console.log(data);
+    console.log('selected answers', data);
   },
   goToNextQuestion: function() {
     var lastQuestionIndex = game.state.questionsAnswered - 1;
@@ -215,9 +227,11 @@ var game = {
       game.state.correctAnswers +
       " out of " +
       game.state.numberOfQuestions +
-      "</span><br> correct";
-    game.state.questionsView.fadeOut(400, function() {
-      game.state.gameEndText[0].innerHTML = endText;
+      "</span><br> correct"+
+      "<br> earn <span class='score'>"+game.state.score+"</span> points.";
+
+      game.state.questionsView.fadeOut(400, function() {
+      game.state.gameEndText[0].innerHTML = endText;  
       game.state.gameEndView.fadeIn(200);
     });
   }
