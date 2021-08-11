@@ -1,4 +1,5 @@
 var selectedAnswer = [];
+var points;
 var game = {
   // state and jquery selectors
   state: {
@@ -41,6 +42,7 @@ var game = {
 
     game.state.viewAnswer.on("click touch", function(e) {
       e.preventDefault();
+      $(".preview-wrapper").html('');
       $(".question").clone().appendTo(".preview-wrapper").removeAttr('style').css({"display": "block"});;
       game.viewSelectedAnswer(selectedAnswer);
     });
@@ -94,11 +96,12 @@ var game = {
       game.state.correctAnswers++;
       game.drawGaugeValue();
       game.updateProgress(true);
-      game.giveAnswerFeedback(answer);
+      // game.giveAnswerFeedback(answer);
     } else {
       game.updateProgress(false);
-      game.giveAnswerFeedback(answer);
+      // game.giveAnswerFeedback(answer);
     }
+    game.giveAnswerFeedback(answer);
     game.state.questionsAnswered++;
 
     // wait a second
