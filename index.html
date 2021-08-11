@@ -34,7 +34,7 @@
                     1:00:00
                   </p>
                   <div class="game-left-col">
-                    <div class="gauge-container" style="background: #ffffff url('images/icon-01.svg') no-repeat center center; background-size: 100px 100px;">
+                    <div class="gauge-container" style="background-size: 100px 100px;">
                       <canvas id="gauge" class="gauge" width="240" height="240"></canvas>
                       <div class="score-number">0</div>
                     </div>
@@ -52,25 +52,25 @@
                       <div class="question">
                         <p><span class="number">2 </span><span class="questionText">Who is most handsome of them?</span></p>
                         <div class="answers">
-                          <label><input type="checkbox" class="answer" data-correct="false"><span class="text">A. James Reid</span></label>
-                          <label><input type="checkbox" class="answer" data-correct="false"><span class="text">B. Daniel Padilla</span></label>
-                          <label><input type="checkbox" class="answer" data-correct="true"><span class="text">C. mcfaith</span></label>
+                          <label><input type="checkbox" class="answer" data-i="1" data-correct="false"><span class="text">A. James Reid</span></label>
+                          <label><input type="checkbox" class="answer" data-i="2" data-correct="false"><span class="text">B. Daniel Padilla</span></label>
+                          <label><input type="checkbox" class="answer" data-i="3" data-correct="true"><span class="text">C. mcfaith</span></label>
                         </div>
                       </div>
                       <div class="question">
                         <p><span class="number">3 </span><span class="questionText">Are you sure for the 2nd time that mcfaith is handsome? 
                         </span></p>
                         <div class="answers">
-                         <label><input type="checkbox" class="answer" data-correct="true"><span class="text">A. Yes</span></label>
-                          <label><input type="checkbox" class="answer" data-correct="false"><span class="text">B.  No</span></label>
+                         <label><input type="checkbox" class="answer" data-i="1" data-correct="true"><span class="text">A. Yes</span></label>
+                          <label><input type="checkbox" class="answer" data-i="2" data-correct="false"><span class="text">B.  No</span></label>
                         </div>
                       </div>
                       <div class="question">
                         <p><span class="number">4 </span><span class="questionText">Do you think you can surpass his handsomeness?</span></p>
                         <div class="answers">
-                          <label><input type="checkbox" class="answer" data-correct="false"><span class="text">A. Yes Absolutely</span></label>
-                          <label><input type="checkbox" class="answer" data-correct="true"><span class="text">B. No I am weakling</span></label>
-                          <label><input type="checkbox" class="answer" data-correct="false"><span class="text">C.  Maybe, But im just 2nd to him</span></label>
+                          <label><input type="checkbox" class="answer" data-i="1" data-correct="false"><span class="text">A. Yes Absolutely</span></label>
+                          <label><input type="checkbox" class="answer" data-i="2" data-correct="true"><span class="text">B. No I am weakling</span></label>
+                          <label><input type="checkbox" class="answer" data-i="3" data-correct="false"><span class="text">C.  Maybe, But im just 2nd to him</span></label>
                         </div>
                       </div>
                     </div>
@@ -81,9 +81,9 @@
                     </div>
                     <div id="game-end">
                       <p id="game-end-text" class="game-end-text"></p>
-                      <a href="#" class="fx-btn">Leaderboard</a>
-                      <a href="#" class="fx-btn">View Answer</a>
-                      <a href="./challenge-page.html" class="fx-btn">Play again</a>
+                      <a href="#" class="fx-btn" id="leaderboard">Leaderboard</a>
+                      <a href="#" class="fx-btn" id="viewanswer">View Answer</a>
+                      <a href="#" class="fx-btn" id="play-again">Play again</a>
                     </div>
                   </div>
                 </div>

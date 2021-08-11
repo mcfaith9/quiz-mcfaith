@@ -1,9 +1,12 @@
-var resultList=[];
+var selectedAnswer = [];
 var game = {
   // state and jquery selectors
   state: {
     startButton: $("#start-button"),
+    viewLeaderBoard: $("#leaderboard"),
+    viewAnswer: $("viewanswer"),
     gameContainer: $("#game"),
+    playAgain: $("#play-again"),
     scoreNumber: $(".score-number"),
     questionsView: $(".questions"),
     gameEndView: $("#game-end"),
@@ -34,6 +37,14 @@ var game = {
       e.preventDefault();
       game.start();
     });
+
+    game.state.viewLeaderBoard.on("click touch", function(e) {
+      e.preventDefault();
+      game.viewSelectedAnswer(selectedAnswer);
+    });
+    game.state.playAgain.on("click touch", function(e) {
+      e.preventDefault();
+    });
   },
 
   start: function() {
@@ -55,7 +66,7 @@ var game = {
     var count = 0;
 
     var interval = window.setInterval(function() {
-      var centisecondsRemaining = 10000 - count;
+      var centisecondsRemaining = 2000 - count;
       var min = Math.floor(centisecondsRemaining / 100 / 60);
       var sec = zeroFill(Math.floor(centisecondsRemaining / 100 % 60));
       var cs = zeroFill(centisecondsRemaining % 100);
@@ -76,8 +87,6 @@ var game = {
   },
 
   checkAnswer: function(answer) {
-    resultList = answer.data();
-    console.log(resultList);
     if (answer.data("correct")) {
       game.state.correctAnswers++;
       game.drawGaugeValue();
@@ -98,6 +107,9 @@ var game = {
         game.goToNextQuestion();
       }
     }, 1000);
+
+    var data = selectedAnswer.push(answer.data().i);  
+    game.viewSelectedAnswer(selectedAnswer);
   },
 
   drawGaugeValue: function() {
@@ -170,9 +182,11 @@ var game = {
       } else {
         $(answerGroup[i]).parent().addClass("incorrect");
       }
-    }
+    }   
   },
-
+  viewSelectedAnswer: function(data){
+    console.log(data);
+  },
   goToNextQuestion: function() {
     var lastQuestionIndex = game.state.questionsAnswered - 1;
     var nextQuestionIndex = game.state.questionsAnswered;
