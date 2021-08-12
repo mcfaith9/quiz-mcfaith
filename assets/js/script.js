@@ -25,6 +25,9 @@ var game = {
     numberOfQuestions: $(".question").length,
     fullname: $("#fullname"),
     email: $("#emailaddress"),
+    APIToken: "token",
+    APIEndpoint: "https://r4nkt.com/",
+    APIKey: "w2YjdIYWWwC82Ye9VDIke5xPx643wFQ5toWbMw89",
     questionsAnswered: 0,
     correctAnswers: 0,
     correctPoints: 100,
@@ -256,6 +259,7 @@ var game = {
 
     let $data = [
       {
+        id: md5(game.state.email.val()),
         timeStamp: timeStamp.toUTCString(),
         name: uppercaseWords(game.state.fullname.val()),
         email: game.state.email.val(),
@@ -268,6 +272,22 @@ var game = {
     var jsonData = JSON.stringify($data);
     var file = new File([jsonData],"data.txt",{ type: "text/plain;charset=utf-8" });
     saveAs(file);
+
+    $.ajax({  
+      url: game.state.APIEndpoint + "?key=" + game.state.APIKey,  
+      type: 'POST',  
+      // headers: {
+      //   'Content-Type': 'application/x-www-form-urlencoded'
+      // },
+      dataType: 'json',  
+      data: jsonData,  
+      success: function (data, textStatus, xhr) {  
+        console.log(data);  
+      },  
+      error: function (xhr, textStatus, errorThrown) {  
+        console.log('Error in Operation');  
+      }  
+    });
     console.log($data, jsonData);
   }
 };
