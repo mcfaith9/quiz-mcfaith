@@ -24,6 +24,7 @@ var game = {
     indicators: $(".indicator"),
     numberOfQuestions: $(".question").length,
     fullname: $("#fullname"),
+    email: $("#emailaddress"),
     questionsAnswered: 0,
     correctAnswers: 0,
     correctPoints: 100,
@@ -48,6 +49,8 @@ var game = {
       $(".form-control").keyup(function(){
         if($("#fullname").val().length != 0 && $("#emailaddress").val().length != 0){
           $("#start-button").attr('disabled', false).removeClass("disabled");
+        } else {
+          $("#start-button").attr('disabled', true).addClass("disabled");
         }
       });
     });
@@ -105,7 +108,7 @@ var game = {
       }
       if (game.state.questionsAnswered === game.state.numberOfQuestions) {
         clearInterval(interval);
-      }
+      }      
     }, 10);
   },
 
@@ -140,7 +143,6 @@ var game = {
   },
 
   score: function(points){
-    console.log('points', points);
   },
 
   drawGaugeValue: function() {
@@ -215,9 +217,10 @@ var game = {
       }
     }   
   },
+
   viewSelectedAnswer: function(data){    
-    console.log('selected answers', data);
   },
+
   goToNextQuestion: function() {
     var lastQuestionIndex = game.state.questionsAnswered - 1;
     var nextQuestionIndex = game.state.questionsAnswered;
@@ -225,6 +228,7 @@ var game = {
       $(game.state.questions[nextQuestionIndex]).fadeIn(200);
     });
   },
+
   timesUp: function() {
     var endText =
       "Looks like you’ve run out of time.<br />No worries. You can play up to 5 times a day.";
@@ -248,6 +252,23 @@ var game = {
       game.state.gameEndText[0].innerHTML = endText;  
       game.state.gameEndView.fadeIn(200);
     });
+    var timeStamp = new Date();
+
+    let $data = [
+      {
+        timeStamp: timeStamp.toUTCString(),
+        name: uppercaseWords(game.state.fullname.val()),
+        email: game.state.email.val(),
+        totalCorrectAnswer: game.state.correctAnswers,
+        totalQuestion: game.state.numberOfQuestions,
+        score: game.state.score,
+        timeFinish: game.state.timer.text(),
+      }
+    ];
+    var jsonData = JSON.stringify($data);
+    var file = new File([jsonData],"data.txt",{ type: "text/plain;charset=utf-8" });
+    saveAs(file);
+    console.log($data, jsonData);
   }
 };
 
