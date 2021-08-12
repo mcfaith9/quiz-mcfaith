@@ -25,9 +25,9 @@ var game = {
     numberOfQuestions: $(".question").length,
     fullname: $("#fullname"),
     email: $("#emailaddress"),
-    APIToken: "token",
-    APIEndpoint: "https://r4nkt.com/",
-    APIKey: "w2YjdIYWWwC82Ye9VDIke5xPx643wFQ5toWbMw89",
+    APIToken: "w2YjdIYWWwC82Ye9VDIke5xPx643wFQ5toWbMw89",
+    gameID: "XGQVPL3469",
+    APIEndpoint: "https://api.r4nkt.com/v1/",
     questionsAnswered: 0,
     correctAnswers: 0,
     correctPoints: 100,
@@ -68,6 +68,10 @@ var game = {
       $(".preview-wrapper").html('');
       $(".question").clone().appendTo(".preview-wrapper").removeAttr('style').css({"display": "block"});;
       game.viewSelectedAnswer(selectedAnswer);
+    });
+    game.state.viewLeaderBoard.on("click touch", function(e) {
+      e.preventDefault();
+      game.leaderboard(JSON.parse(localStorage.getItem("data")));
     });
     game.state.playAgain.on("click touch", function(e) {
       e.preventDefault();
@@ -146,6 +150,14 @@ var game = {
   },
 
   score: function(points){
+  },
+
+  leaderboard: function(data){
+    $('#leaderboardModal').modal('show'); 
+    $.each(data[1], function( index, value ) {
+      console.log(index + ": " + value);
+    });
+    console.log(data);
   },
 
   drawGaugeValue: function() {
@@ -255,40 +267,25 @@ var game = {
       game.state.gameEndText[0].innerHTML = endText;  
       game.state.gameEndView.fadeIn(200);
     });
+
     var timeStamp = new Date();
+    var mData = [];
+    var sData = [];
+    let $data =
+    {
+      id: md5(game.state.email.val()),
+      timeStamp: timeStamp.toUTCString(),
+      name: uppercaseWords(game.state.fullname.val()),
+      email: game.state.email.val(),
+      totalCorrectAnswer: game.state.correctAnswers,
+      totalQuestion: game.state.numberOfQuestions,
+      score: game.state.score,
+      timeFinish: game.state.timer.text(),
+    };
 
-    let $data = [
-      {
-        id: md5(game.state.email.val()),
-        timeStamp: timeStamp.toUTCString(),
-        name: uppercaseWords(game.state.fullname.val()),
-        email: game.state.email.val(),
-        totalCorrectAnswer: game.state.correctAnswers,
-        totalQuestion: game.state.numberOfQuestions,
-        score: game.state.score,
-        timeFinish: game.state.timer.text(),
-      }
-    ];
-    var jsonData = JSON.stringify($data);
-    var file = new File([jsonData],"data.txt",{ type: "text/plain;charset=utf-8" });
-    saveAs(file);
-
-    $.ajax({  
-      url: game.state.APIEndpoint + "?key=" + game.state.APIKey,  
-      type: 'POST',  
-      // headers: {
-      //   'Content-Type': 'application/x-www-form-urlencoded'
-      // },
-      dataType: 'json',  
-      data: jsonData,  
-      success: function (data, textStatus, xhr) {  
-        console.log(data);  
-      },  
-      error: function (xhr, textStatus, errorThrown) {  
-        console.log('Error in Operation');  
-      }  
-    });
-    console.log($data, jsonData);
+    let currentData = JSON.parse(localStorage.getItem("data"));
+    mData.push($data, currentData);
+    localStorage.setItem("data", JSON.stringify(mData));
   }
 };
 
