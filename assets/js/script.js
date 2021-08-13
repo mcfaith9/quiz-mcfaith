@@ -153,11 +153,33 @@ var game = {
   },
 
   leaderboard: function(data){
-    $('#leaderboardModal').modal('show'); 
-    $.each(data[1], function( index, value ) {
-      console.log(index + ": " + value);
+
+    function tbody(ranking, name, points){
+      var tbodyData = '<tr>'+
+                      '<th scope="row">'+ranking+'</th>'+
+                      '<td>'+name+'</td>'+
+                      '<td>'+points+'</td>'+
+                      '</tr>';
+      return tbodyData;
+    } 
+
+    var playerRanking = data;
+    playerRanking.sort(function(a,b){ return b.score - a.score; });
+    playerRanking.forEach(function(player, i, arr) {
+      player.rank = i === 0 || player.score != arr[i-1].score
+                  ? i + 1
+                  : arr[i-1].rank;
     });
-    console.log(data);
+
+    $(".leaderboard-tbody").html("");
+    for (var i = 0, len = playerRanking.length; i < len; i++) {
+      var appendData = tbody(Math.abs(playerRanking[i].rank), playerRanking[i].name, playerRanking[i].score);
+      $(".leaderboard-tbody").append(appendData);
+    }
+
+    $('#leaderboardModal').modal('show'); 
+        
+    console.log(playerRanking);
   },
 
   drawGaugeValue: function() {
@@ -284,7 +306,7 @@ var game = {
     };
 
     let currentData = JSON.parse(localStorage.getItem("data"));
-    mData.push($data, currentData);
+    mData = currentData.concat($data);
     localStorage.setItem("data", JSON.stringify(mData));
   }
 };
