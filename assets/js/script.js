@@ -237,7 +237,7 @@ var game = {
         {
           duration: 1000 * nextValue,
           step: function(now, fx) {
-            game.state.scoreNumber.text(Math.ceil(now * 100));
+            game.state.scoreNumber.text(Math.ceil(now * 100) +"%");
             ctx.putImageData(imd, 0, 0);
             ctx.beginPath();
             ctx.arc(
