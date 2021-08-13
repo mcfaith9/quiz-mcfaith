@@ -48,11 +48,16 @@ var game = {
       e.preventDefault();
       $("#start-quiz").remove();
       $("#start-button").show();
-      
+
+      function validateEmail(email) {
+        var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
+        return re.test(email);
+      }
+
       $(".form-control").keyup(function(){
-        if($("#fullname").val().length != 0 && $("#emailaddress").val().length != 0){
+        if($("#fullname").val().length != 0 && validateEmail($("#emailaddress").val()) == true){
           $("#game-rules").collapse("show");
-          $("#user-info-wrapper").collapse("hide");
+          // $("#user-info-wrapper").collapse("hide");
           $("#start-button").attr('disabled', false).removeClass("disabled");
         } else {
           $("#game-rules").collapse("hide");
@@ -98,8 +103,10 @@ var game = {
         scrollTop: game.state.gameContainer.offset().top - 10
       },
       400,
-      game.startTimer()
+      game.startTimer(),
+      setTimeout(function(){ $("#welcome-div").css("display","none"); }, 1000)      
     );
+
     game.state.startButton.unbind("click touch");
   },
 
