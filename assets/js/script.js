@@ -132,7 +132,6 @@ var game = {
       count++;
       if (centisecondsRemaining === 0) {
         clearInterval(interval);
-        //game.endGame();
         game.timesUp();
       }
       if (game.state.questionsAnswered === game.state.numberOfQuestions) {
@@ -161,8 +160,9 @@ var game = {
     // wait a second
     window.setTimeout(function() {
       //end game else go to next question
-      if (game.state.questionsAnswered === game.state.numberOfQuestions) {
-        game.endGame();
+      if (game.state.questionsAnswered === game.state.numberOfQuestions) {        
+        game.processData();
+        game.endGame();        
       } else {
         game.goToNextQuestion();
       }
@@ -298,30 +298,24 @@ var game = {
     });
   },
 
-  endGame: function() {
-    game.processData();
-
+  endGame: function() {  
     var id = md5(game.state.email.val());
+    // console.log(JSON.parse(localStorage.getItem("rankingData")));
     // var myranking = JSON.parse(localStorage.getItem("rankingData"));
-
-    // if("data" in localStorage){
-    //   function isFound(myranking, id) {
-    //     console.log(myranking, id);
-    //     return myranking.id === id;
+    // let myRank = [];
+    // for (let i = 0; i < myranking.length; i++) {
+    //   if (myranking[i].id == id) {
+    //     myRank.push(myranking[i]);
     //   }
+    // }    
 
-    //   var rank = myranking.find(isFound);
-    //   console.log('asdasasdasdas',isFound().rank);
-    // }   
-    
     var endText =
-      'You got<br><span class="score">' +
+      'You got <span class="score">' +
       game.state.correctAnswers +
       " out of " +
       game.state.numberOfQuestions +
       "</span><br> correct answer"+
-      "<br>"+uppercaseWords(game.state.fullname.val())+" you earn <span class='score'>"+game.state.score+"</span> points."+
-      "<br>Youre rank <span class='score'></span>";
+      "<br>"+uppercaseWords(game.state.fullname.val())+" you earn <span class='score'>"+game.state.score+"</span> points.";
 
       game.state.questionsView.fadeOut(400, function() {
       game.state.gameEndText[0].innerHTML = endText;  
