@@ -86,7 +86,8 @@ var game = {
     game.state.viewAnswer.on("click touch", function(e) {
       e.preventDefault();
       $(".preview-wrapper").html('');
-      $(".question").clone().appendTo(".preview-wrapper").removeAttr('style').css({"display": "block"});;
+      $(".question").clone().appendTo(".preview-wrapper").removeAttr('style').css({"display": "block"});
+      $('#viewanswerModal').modal('show');
       game.viewSelectedAnswer(selectedAnswer);
     });
     game.state.viewLeaderBoard.on("click touch", function(e) {

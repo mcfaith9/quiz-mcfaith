@@ -195,3 +195,7 @@ text-decoration: none;
 .dark {
   color: #212529!important;
 }
+
+.modal-body .question p {
+  font-size: 16px!important;
+}
