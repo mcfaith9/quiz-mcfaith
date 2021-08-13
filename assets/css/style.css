@@ -8,8 +8,8 @@ form {
 color:#fff;
 } 
 
-.purple-bg {
-background-color: #157bcc!important;
+.white-bg {
+background-color: #ffff!important;
 }
 
 .fx-inputwrap a { 
@@ -193,4 +193,7 @@ text-decoration: none;
 }
 .white {
   color: #fff!important;
+}
+.dark {
+  color: #212529!important;
 }

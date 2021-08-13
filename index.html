@@ -15,33 +15,39 @@
     <div id="content" class="fx-tiles">
       <!-- FULL WIDTH LAYOUT -->
       <div class="fx-grid fx-cf">
-        <div class="fx-col">
+        <section class="fx-col">
           <!-- ADD BLOCK(S) HERE -->
           <!-- START: SHARE BLOCK -->
-          <div class="fx-block fx-purple fx-share fx-align-left fx-cf purple-bg" style="padding:20px;">
-            <div class="container" style="padding-bottom:0">
-              <div class="col-md-4">
-                <h2 class="white">Nexus Quiz</h2>
-                <p class="white">You have 15 mins to answer 12 questions (for demo only 4 questions)</p>
-                <div class="collapse" id="user-info-wrapper">                  
+          <div class="text-center fx-purple white-bg" style="padding:15px;width:100vw;height:100vh;">
+            <div class="container">
+              <div class="" style="display: inline-block;">
+                <img src="assets/images/Nexus.png" width="200">
+                <h1 class="dark">Nexus Quiz</h1>
+                <h5 class="dark text-1">Welcome to the Nexus Quiz</h5>
+                <p class="dark text-1">Click Start to begin</p>
+                <div class="collapse" id="user-info-wrapper">                                    
                   <div class="form-group">
-                    <label class="white" for="fullname">Full Name</label>
+                    <p class="dark">Before starting the quiz you must enter your Full Name and your valid Email Address</p>
                     <input type="text" class="form-control" id="fullname" placeholder="Full Name" required>
                   </div>
+                  <br>
                   <div class="form-group">
-                    <label class="white" for="emailaddress">Email Address</label>
                     <input type="email" class="form-control" id="emailaddress" aria-describedby="emailHelp" placeholder="Enter email" required pattern="^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$">
-                    <small id="emailHelp" class="form-text text-muted" style="color: #fff!important;">We'll never share your email with anyone else.</small>
+                    <small id="emailHelp" class="form-text text-muted" style="color: #212529!important;">We'll never share your email with anyone else.</small>
                   </div>
                   <br>
                 </div>
-                <p><a id="start-quiz" class="btn btn-dark" data-toggle="collapse" href="#user-info-wrapper" role="button" aria-expanded="false" aria-controls="user-info-wrapper" style="width:100%;">Start</a></p>
-                <p><a href="#game" id="start-button" class="btn btn-dark disabled" aria-disabled="true" style="width:100%;display:none;">Start Game</a></p>
-                <p><a href="#" class="btn btn-dark disabled" aria-disabled="true" style="width:100%;">Leaderboard</a></p>
+                <div class="collapse" id="game-rules">     
+                  <p class="dark" style="text-align:left;"><strong>1st Attempt</strong> Non-timed Practice so take your time and ensure your answers are correct</p>
+                  <p class="dark" style="text-align:left;"><strong>2nd Attempt</strong> Your second attempt is timed and scored, try to get through this as fast as possible</p>
+                </div>
+                <p><a id="start-quiz" class="btn btn-dark rounded-pill" data-toggle="collapse" href="#user-info-wrapper" role="button" aria-expanded="false" aria-controls="user-info-wrapper" style="width:100%;">Start</a></p>
+                <p><a href="#game" id="start-button" class="btn btn-dark rounded-pill disabled" aria-disabled="true" style="width:100%;display:none;">Start Game</a></p>
+                <p><a href="#" class="btn btn-dark rounded-pill disabled" aria-disabled="true" style="width:100%;">Leaderboard</a></p>
               </div>
             </div>
           </div>
-        </div>
+        </section>
         <!-- FULL WIDTH LAYOUT -->
         <div class="fx-grid fx-cf">
           <div class="fx-col">
@@ -116,14 +122,14 @@
                         </div>
                         <div id="game-end-times-up">
                           <p id="time-out-text" class="game-end-text"></p>
-                          <a href="#" class="fx-btn btn btn-outline-primary play-again">Play again</a>
+                          <a href="#" class="fx-btn btn btn-outline-primary rounded-pill play-again">Play again</a>
                         </div>
 
                         <div id="game-end">
                           <p id="game-end-text" class="game-end-text"></p>
-                          <a href="#" class="fx-btn btn btn-outline-primary" id="leaderboard">Leaderboard</a>
-                          <a class="fx-btn btn btn-outline-primary" id="viewanswer" data-toggle="collapse" href="#collapsePreview" role="button" aria-expanded="false" aria-controls="collapsePreview">View Answer</a>
-                          <a href="#" class="fx-btn btn btn-outline-primary play-again" id="play-again">Play again</a>
+                          <a href="#" class="fx-btn btn btn-outline-primary rounded-pill" id="leaderboard">Leaderboard</a>
+                          <a class="fx-btn btn btn-outline-primary rounded-pill" id="viewanswer" data-toggle="collapse" href="#collapsePreview" role="button" aria-expanded="false" aria-controls="collapsePreview">View Answer</a>
+                          <a href="#" class="fx-btn btn btn-outline-primary rounded-pill play-again" id="play-again">Play again</a>
                         </div>                        
                       </div>
                     </div>                    
@@ -172,7 +178,7 @@
                       </table>  
                     </div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-sm btn-dark" data-dismiss="modal" style="width:33%;">Close</button>
+                      <button type="button" class="btn btn-sm btn-dark rounded-pill" data-dismiss="modal" style="width:33%;">Close</button>
                     </div>
                   </div>
                 </div>

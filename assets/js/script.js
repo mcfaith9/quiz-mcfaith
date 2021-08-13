@@ -51,11 +51,23 @@ var game = {
       
       $(".form-control").keyup(function(){
         if($("#fullname").val().length != 0 && $("#emailaddress").val().length != 0){
+          $("#game-rules").collapse("show");
+          $("#user-info-wrapper").collapse("hide");
           $("#start-button").attr('disabled', false).removeClass("disabled");
         } else {
+          $("#game-rules").collapse("hide");
           $("#start-button").attr('disabled', true).addClass("disabled");
         }
+        // if($("#fullname").val().length != 0 && $("#emailaddress").val().length != 0){
+        //   $("#start-button").attr('disabled', false).removeClass("disabled");
+        // } else {
+        //   $("#start-button").attr('disabled', true).addClass("disabled");
+        // }
       });
+    });
+    game.state.credentialsButton.on("click touch", function(e) {
+      e.preventDefault();      
+      $(".text-1").css('display', 'none');
     });
     game.state.startButton.on("click touch", function(e) {
       e.preventDefault();      
@@ -178,8 +190,6 @@ var game = {
     }
 
     $('#leaderboardModal').modal('show'); 
-        
-    console.log(playerRanking);
   },
 
   drawGaugeValue: function() {
