@@ -76,7 +76,6 @@ max-height: 800px;
 
 .gauge-container {
 display: inline-block;
-border-bottom: 1px solid #47338f;
 position: relative;
 }
 
