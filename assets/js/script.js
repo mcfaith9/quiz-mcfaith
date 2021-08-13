@@ -1,8 +1,9 @@
 var selectedAnswer = [];
 var arrayPoints = [];
+var timeStamp = new Date();
+const uppercaseWords = str => str.replace(/^(.)|\s+(.)/g, c => c.toUpperCase());
 var points = 0;
 var game = {
-  // state and jquery selectors
   state: {
     startButton: $("#start-button"),
     credentialsButton: $("#start-quiz"),
@@ -33,6 +34,8 @@ var game = {
     correctPoints: 100,
     timePoints: 0,
     score: 0,
+    ranking: 0,
+    peoplePlayed: 0,
   },
 
   init: function() {
@@ -88,7 +91,9 @@ var game = {
     });
     game.state.viewLeaderBoard.on("click touch", function(e) {
       e.preventDefault();
-      game.leaderboard(JSON.parse(localStorage.getItem("data")));
+      game.processData();
+      $('#leaderboardModal').modal('show');
+      // game.leaderboard(JSON.parse(localStorage.getItem("data")));      
     });
     game.state.playAgain.on("click touch", function(e) {
       e.preventDefault();
@@ -106,6 +111,7 @@ var game = {
       game.startTimer(),
       setTimeout(function(){ $("#welcome-div").css("display","none"); }, 1000)      
     );
+    
 
     game.state.startButton.unbind("click touch");
   },
@@ -164,15 +170,25 @@ var game = {
 
     var data = selectedAnswer.push(answer.data().i);     
     game.viewSelectedAnswer(selectedAnswer);
-
-    game.score(game.state.score);
   },
 
-  score: function(points){
+  processData: function(){    
+    if("data" in localStorage){
+      var playerRanking = JSON.parse(localStorage.getItem("data"));
+      playerRanking.sort(function(a,b){ return b.score - a.score; });
+      playerRanking.forEach(function(player, i, arr) {
+        player.rank = i === 0 || player.score != arr[i-1].score
+                    ? i + 1
+                    : arr[i-1].rank;
+      });
+
+      localStorage.removeItem("rankingData");
+      localStorage.setItem("rankingData", JSON.stringify(playerRanking));
+      game.leaderboard(JSON.parse(localStorage.getItem("rankingData")));
+    } 
   },
 
   leaderboard: function(data){
-
     function tbody(ranking, name, points){
       var tbodyData = '<tr>'+
                       '<th scope="row">'+ranking+'</th>'+
@@ -180,23 +196,13 @@ var game = {
                       '<td>'+points+'</td>'+
                       '</tr>';
       return tbodyData;
-    } 
-
-    var playerRanking = data;
-    playerRanking.sort(function(a,b){ return b.score - a.score; });
-    playerRanking.forEach(function(player, i, arr) {
-      player.rank = i === 0 || player.score != arr[i-1].score
-                  ? i + 1
-                  : arr[i-1].rank;
-    });
+    }     
 
     $(".leaderboard-tbody").html("");
-    for (var i = 0, len = playerRanking.length; i < len; i++) {
-      var appendData = tbody(Math.abs(playerRanking[i].rank), playerRanking[i].name, playerRanking[i].score);
+    for (var i = 0, len = data.length; i < len; i++) {
+      var appendData = tbody(Math.abs(data[i].rank), data[i].name, data[i].score);
       $(".leaderboard-tbody").append(appendData);
-    }
-
-    $('#leaderboardModal').modal('show'); 
+    }   
   },
 
   drawGaugeValue: function() {
@@ -293,38 +299,59 @@ var game = {
   },
 
   endGame: function() {
-    const uppercaseWords = str => str.replace(/^(.)|\s+(.)/g, c => c.toUpperCase());
+    game.processData();
+
+    var id = md5(game.state.email.val());
+    // var myranking = JSON.parse(localStorage.getItem("rankingData"));
+
+    // if("data" in localStorage){
+    //   function isFound(myranking, id) {
+    //     console.log(myranking, id);
+    //     return myranking.id === id;
+    //   }
+
+    //   var rank = myranking.find(isFound);
+    //   console.log('asdasasdasdas',isFound().rank);
+    // }   
+    
     var endText =
       'You got<br><span class="score">' +
       game.state.correctAnswers +
       " out of " +
       game.state.numberOfQuestions +
       "</span><br> correct answer"+
-      "<br>"+uppercaseWords(game.state.fullname.val())+" you earn <span class='score'>"+game.state.score+"</span> points.";
+      "<br>"+uppercaseWords(game.state.fullname.val())+" you earn <span class='score'>"+game.state.score+"</span> points."+
+      "<br>Youre rank <span class='score'></span>";
 
       game.state.questionsView.fadeOut(400, function() {
       game.state.gameEndText[0].innerHTML = endText;  
       game.state.gameEndView.fadeIn(200);
     });
 
-    var timeStamp = new Date();
+    // var timeStamp = new Date();
     var mData = [];
     var sData = [];
     let $data =
-    {
-      id: md5(game.state.email.val()),
-      timeStamp: timeStamp.toUTCString(),
-      name: uppercaseWords(game.state.fullname.val()),
-      email: game.state.email.val(),
-      totalCorrectAnswer: game.state.correctAnswers,
-      totalQuestion: game.state.numberOfQuestions,
-      score: game.state.score,
-      timeFinish: game.state.timer.text(),
-    };
+    [
+      {
+        id: md5(game.state.email.val()),
+        timeStamp: timeStamp.toUTCString(),
+        name: uppercaseWords(game.state.fullname.val()),
+        email: game.state.email.val(),
+        totalCorrectAnswer: game.state.correctAnswers,
+        totalQuestion: game.state.numberOfQuestions,
+        score: game.state.score,
+        timeFinish: game.state.timer.text()
+      }
+    ];
 
-    let currentData = JSON.parse(localStorage.getItem("data"));
-    mData = currentData.concat($data);
-    localStorage.setItem("data", JSON.stringify(mData));
+    if("data" in localStorage){
+      let currentData = JSON.parse(localStorage.getItem("data"));
+      mData = currentData.concat($data);
+      localStorage.setItem("data", JSON.stringify(mData));
+    } else {
+      localStorage.setItem("data", JSON.stringify($data));
+    }    
   }
 };
 
