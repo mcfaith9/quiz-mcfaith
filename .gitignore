@@ -1,5 +1,6 @@
 #git ignore files
 index_.html
 quiz.js
+quiz.css
 global-wrapper-min.css
 master-responsive-min.css

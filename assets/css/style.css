@@ -156,7 +156,7 @@ display: none;
 position: relative;
 }
 
-@media screen and (max-width: 425px) {
+@media (max-width: 425px) {
   #qrCodeDiv{
     display: none;
   }
