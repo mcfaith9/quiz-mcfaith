@@ -156,11 +156,6 @@ display: none;
 position: relative;
 }
 
-@media (max-width: 425px) {
-  #qrCodeDiv{
-    display: none;
-  }
-}
 
 @media screen and (min-width: 860px) {
   #game-end {
@@ -168,7 +163,6 @@ position: relative;
   }
   #game-end-times-up {
     padding-top: 2rem;
-  }
   }
   #game-end p {
   color: #47338f;
@@ -205,5 +199,11 @@ position: relative;
 
   .modal-body .question p {
     font-size: 16px!important;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  #qrCodeDiv{
+    display: none;
   }
 }
