@@ -9,7 +9,7 @@ color:#fff;
 } 
 
 .white-bg {
-background-color: #ffff!important;
+background-color: #dedddd!important;
 }
 
 .fx-inputwrap a { 
@@ -156,9 +156,6 @@ display: none;
 position: relative;
 }
 @media screen and (min-width: 860px) {
-  #qrCodeDiv{
-    display: none;
-  }
   #game-end {
     padding-top:1rem;
   }
@@ -202,5 +199,4 @@ position: relative;
   .modal-body .question p {
     font-size: 16px!important;
   }
-
 }
