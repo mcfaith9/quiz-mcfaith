@@ -56,11 +56,13 @@
               <div id="game">                  
                 <div class="game-grid">                  
                   <div class="container">
-                    <strong id="timer" class="timer justify-content-center border rounded-pill" style="display: inline-block; width: 50%;">
-                      1:00:00
-                    </strong>
-                    <br>
-                    <br>
+                    <div class="time-group">
+                      <strong id="timer" class="timer justify-content-center border rounded-pill" style="display: inline-block; width: 50%;">
+                        1:00:00
+                      </strong>
+                      <br>
+                      <br>
+                    </div>
                     <div class="row">
                       <div class="game-left-col col-md-6 col-md-sm-6">
                         <div class="gauge-container" style="background-size: 100px 100px;">
@@ -73,60 +75,60 @@
                         <div class="questions">
                           <div class="question">
                             <p><span class="number">1 </span><span class="questionText">Which is the planet nearest to the sun?</span></p>
-                            <div class="answers">
-                              <label class="shuffleme"><input type="checkbox" class="answer" data-i="1" data-correct="false"><span class="text">A. Earth</span></label>
-                              <label class="shuffleme"><input type="checkbox" class="answer" data-i="2" data-correct="false"><span class="text">B. Mars</span></label>
-                              <label class="shuffleme"><input type="checkbox" class="answer" data-i="3" data-correct="true"><span class="text">C. Mercury</span></label>
+                            <div id="shuffle-question-1" class="answers">
+                              <label><input type="checkbox" class="answer" data-i="1" data-correct="false"><span class="text">A. Earth</span></label>
+                              <label><input type="checkbox" class="answer" data-i="2" data-correct="false"><span class="text">B. Mars</span></label>
+                              <label><input type="checkbox" class="answer" data-i="3" data-correct="true"><span class="text">C. Mercury</span></label>
                             </div>
                           </div>
                           <div class="question">
                             <p><span class="number">2 </span><span class="questionText">Which is the planet farthest from the sun?</span></p>
-                            <div class="answers">
-                              <label class="shuffleme"><input type="checkbox" class="answer" data-i="1" data-correct="false"><span class="text">A. Uranus</span></label>
-                              <label class="shuffleme"><input type="checkbox" class="answer" data-i="2" data-correct="false"><span class="text">B. Jupiter</span></label>
-                              <label class="shuffleme"><input type="checkbox" class="answer" data-i="3" data-correct="true"><span class="text">C. Neptune</span></label>
+                            <div id="shuffle-question-2" class="answers">
+                              <label><input type="checkbox" class="answer" data-i="1" data-correct="false"><span class="text">A. Uranus</span></label>
+                              <label><input type="checkbox" class="answer" data-i="2" data-correct="false"><span class="text">B. Jupiter</span></label>
+                              <label><input type="checkbox" class="answer" data-i="3" data-correct="true"><span class="text">C. Neptune</span></label>
                             </div>
                           </div>
                           <div class="question">
                             <p><span class="number">3 </span><span class="questionText"> ______ is the hottest planet of our solar system. 
                             </span></p>
-                            <div class="answers">
-                              <label class="shuffleme"><input type="checkbox" class="answer" data-i="1" data-correct="true"><span class="text">A. Venus</span></label>
-                              <label class="shuffleme"><input type="checkbox" class="answer" data-i="2" data-correct="false"><span class="text">B. Mercury</span></label>
-                              <label class="shuffleme"><input type="checkbox" class="answer" data-i="3" data-correct="false"><span class="text">C. Jupiter</span></label>
+                            <div id="shuffle-question-3" class="answers">
+                              <label><input type="checkbox" class="answer" data-i="1" data-correct="true"><span class="text">A. Venus</span></label>
+                              <label><input type="checkbox" class="answer" data-i="2" data-correct="false"><span class="text">B. Mercury</span></label>
+                              <label><input type="checkbox" class="answer" data-i="3" data-correct="false"><span class="text">C. Jupiter</span></label>
                             </div>
                           </div>
                           <div class="question">
                             <p><span class="number">4 </span><span class="questionText">Which is the smallest planet of our solar system?</span></p>
-                            <div class="answers">
-                              <label class="shuffleme"><input type="checkbox" class="answer" data-i="1" data-correct="false"><span class="text">A. Uranus</span></label>
-                              <label class="shuffleme"><input type="checkbox" class="answer" data-i="2" data-correct="true"><span class="text">B. Mercury</span></label>
-                              <label class="shuffleme"><input type="checkbox" class="answer" data-i="3" data-correct="false"><span class="text">C. Mars</span></label>
+                            <div id="shuffle-question-4" class="answers">
+                              <label><input type="checkbox" class="answer" data-i="1" data-correct="false"><span class="text">A. Uranus</span></label>
+                              <label><input type="checkbox" class="answer" data-i="2" data-correct="true"><span class="text">B. Mercury</span></label>
+                              <label><input type="checkbox" class="answer" data-i="3" data-correct="false"><span class="text">C. Mars</span></label>
                             </div>
                           </div>
                           <div class="question">
                             <p><span class="number">5 </span><span class="questionText">Which of these is the coldest planet of our solar system?</span></p>
-                            <div class="answers">
-                              <label class="shuffleme"><input type="checkbox" class="answer" data-i="1" data-correct="false"><span class="text">A. Saturn</span></label>
-                              <label class="shuffleme"><input type="checkbox" class="answer" data-i="2" data-correct="false"><span class="text">B. Jupiter</span></label>
-                              <label class="shuffleme"><input type="checkbox" class="answer" data-i="3" data-correct="true"><span class="text">C. Neptune</span></label>
+                            <div id="shuffle-question-5" class="answers">
+                              <label><input type="checkbox" class="answer" data-i="1" data-correct="false"><span class="text">A. Saturn</span></label>
+                              <label><input type="checkbox" class="answer" data-i="2" data-correct="false"><span class="text">B. Jupiter</span></label>
+                              <label><input type="checkbox" class="answer" data-i="3" data-correct="true"><span class="text">C. Neptune</span></label>
                             </div>
                           </div>
                           <div class="question">
                             <p><span class="number">6 </span><span class="questionText">______ is called the “Red Planet” of our solar system.</span></p>
-                            <div class="answers">
-                              <label class="shuffleme"><input type="checkbox" class="answer" data-i="1" data-correct="true"><span class="text">A. Mars</span></label>
-                              <label class="shuffleme"><input type="checkbox" class="answer" data-i="2" data-correct="false"><span class="text">B. Mercury</span></label>
-                              <label class="shuffleme"><input type="checkbox" class="answer" data-i="3" data-correct="false"><span class="text">C. Venus</span></label>
+                            <div id="shuffle-question-6" class="answers">
+                              <label><input type="checkbox" class="answer" data-i="1" data-correct="true"><span class="text">A. Mars</span></label>
+                              <label><input type="checkbox" class="answer" data-i="2" data-correct="false"><span class="text">B. Mercury</span></label>
+                              <label><input type="checkbox" class="answer" data-i="3" data-correct="false"><span class="text">C. Venus</span></label>
                             </div>
                           </div>
                         </div>
-                        <div id="game-end-times-up">
+                        <div id="game-end-times-up">                          
                           <p id="time-out-text" class="game-end-text"></p>
                           <a href="#" class="fx-btn btn btn-dark rounded-pill play-again">Play again</a>
-                        </div>
-
-                        <div id="game-end">
+                        </div>                        
+                        <div id="game-end">    
+                          <p id="yourTime" style="color:#47338f;margin:0;"></p>                      
                           <p id="game-end-text" class="game-end-text"></p>
                           <p><a href="#" class="fx-btn btn btn-dark rounded-pill w-100" id="leaderboard">Leaderboard</a></p>
                           <p><a class="fx-btn btn btn-dark rounded-pill w-100" id="viewanswer" data-toggle="collapse" href="#collapsePreview" role="button" aria-expanded="false" aria-controls="collapsePreview">View Answer</a></p>

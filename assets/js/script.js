@@ -17,6 +17,7 @@ var game = {
     gameEndView: $("#game-end"),
     gameEndViewTimesUp: $("#game-end-times-up"),
     gameEndText: $("#game-end-text"),
+    gameFinishedTime: $("#yourTime"),
     timeOutText: $("#time-out-text"),
     gauge: $("#gauge"),
     questions: $(".question"),
@@ -84,10 +85,7 @@ var game = {
       game.start();
     });
     game.state.viewAnswer.on("click touch", function(e) {
-      e.preventDefault();
-      $(".preview-wrapper").html('');
-      $(".question").clone().appendTo(".preview-wrapper").removeAttr('style').css({"display": "block"});
-      $('#viewanswerModal').modal('show');
+      e.preventDefault();      
       game.viewSelectedAnswer(selectedAnswer);
     });
     game.state.viewLeaderBoard.on("click touch", function(e) {
@@ -124,12 +122,13 @@ var game = {
     var count = 0;
 
     var interval = window.setInterval(function() {
-      var centisecondsRemaining = 90000 - count;
+      var mins15 = 90000;
+      var mins5 = 30000;
+      var centisecondsRemaining = 30000 - count;
       var min = Math.floor(centisecondsRemaining / 100 / 60);
       var sec = zeroFill(Math.floor(centisecondsRemaining / 100 % 60));
       var cs = zeroFill(centisecondsRemaining % 100);
-      game.state.timer.text(min + ":" + sec + ":" + cs);
-      game.state.timePoints = centisecondsRemaining;
+      game.state.timer.text(min + ":" + sec + ":" + cs);      
       count++;
       if (centisecondsRemaining === 0) {
         clearInterval(interval);
@@ -141,7 +140,8 @@ var game = {
       if (game.state.questionsAnswered === game.state.numberOfQuestions) {
         clearInterval(interval);
       }      
-    }, 10);
+      game.state.timePoints = min * 60 + sec;
+    }, 10);    
   },
 
   checkAnswer: function(answer) {
@@ -164,13 +164,12 @@ var game = {
       if (game.state.questionsAnswered === game.state.numberOfQuestions) {        
         game.processData();
         game.endGame();        
-      } else {
+      } else {        
         game.goToNextQuestion();
       }
     }, 1000);
 
-    var data = selectedAnswer.push(answer.data().i);     
-    game.viewSelectedAnswer(selectedAnswer);
+    var data = selectedAnswer.push(answer.data().i);
   },
 
   processData: function(){    
@@ -280,11 +279,17 @@ var game = {
   },
 
   viewSelectedAnswer: function(data){    
+    $(".preview-wrapper").html('');
+    $(".question").clone().appendTo(".preview-wrapper").removeAttr('style').css({"display": "block"});
+    $('#viewanswerModal').modal('show');
   },
 
   goToNextQuestion: function() {
     var lastQuestionIndex = game.state.questionsAnswered - 1;
     var nextQuestionIndex = game.state.questionsAnswered;
+    var i = 0;
+    var d = i + 1;
+    console.log(d);
     $(game.state.questions[lastQuestionIndex]).fadeOut(400, function() {
       $(game.state.questions[nextQuestionIndex]).fadeIn(200);
     });
@@ -301,6 +306,10 @@ var game = {
 
   endGame: function() {  
     var id = md5(game.state.email.val());
+    var mData = [];
+    var sData = [];
+    var calculateTimeScore = game.state.timePoints * 10;
+    var finalScore = game.state.score + calculateTimeScore; 
     // console.log(JSON.parse(localStorage.getItem("rankingData")));
     // var myranking = JSON.parse(localStorage.getItem("rankingData"));
     // let myRank = [];
@@ -309,23 +318,22 @@ var game = {
     //     myRank.push(myranking[i]);
     //   }
     // }    
-
+    var finishedTime = 'Your Time '+ game.state.timer.text();
     var endText =
       'You got <span class="score">' +
       game.state.correctAnswers +
       " out of " +
       game.state.numberOfQuestions +
       "</span><br> correct answer"+
-      "<br>"+uppercaseWords(game.state.fullname.val())+" you earn <span class='score'>"+game.state.score+"</span> points.";
+      "<br>"+uppercaseWords(game.state.fullname.val())+" you earn <span class='score'>"+finalScore+"</span> points.";
 
       game.state.questionsView.fadeOut(400, function() {
       game.state.gameEndText[0].innerHTML = endText;  
+      game.state.gameFinishedTime[0].innerHTML = finishedTime;
       game.state.gameEndView.fadeIn(200);
+      $(".time-group").fadeOut(1000).remove();
     });
-
-    // var timeStamp = new Date();
-    var mData = [];
-    var sData = [];
+    
     let $data =
     [
       {
@@ -335,7 +343,7 @@ var game = {
         email: game.state.email.val(),
         totalCorrectAnswer: game.state.correctAnswers,
         totalQuestion: game.state.numberOfQuestions,
-        score: game.state.score,
+        score: finalScore,
         timeFinish: game.state.timer.text()
       }
     ];

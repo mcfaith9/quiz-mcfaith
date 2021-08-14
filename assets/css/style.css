@@ -168,10 +168,10 @@ color: #47338f;
 }
 .game-end-text {
 color: #47338f;
-font-size: 24px;
+font-size: 18px;
 }
 .game-end-text .score{
-font-size: 26px;
+font-size: 20px;
 font-weight: bold;
 }
 #game-end .fx-btn{
