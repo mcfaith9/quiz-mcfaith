@@ -156,46 +156,51 @@ display: none;
 position: relative;
 }
 @media screen and (min-width: 860px) {
-#game-end {
-  padding-top:1rem;
-}
-#game-end-times-up {
-  padding-top: 2rem;
-}
-}
-#game-end p {
-color: #47338f;
-}
-.game-end-text {
-color: #47338f;
-font-size: 18px;
-}
-.game-end-text .score{
-font-size: 20px;
-font-weight: bold;
-}
-#game-end .fx-btn{
-margin: 0;
-}
+  #qrCodeDiv{
+    display: none;
+  }
+  #game-end {
+    padding-top:1rem;
+  }
+  #game-end-times-up {
+    padding-top: 2rem;
+  }
+  }
+  #game-end p {
+  color: #47338f;
+  }
+  .game-end-text {
+  color: #47338f;
+  font-size: 18px;
+  }
+  .game-end-text .score{
+  font-size: 20px;
+  font-weight: bold;
+  }
+  #game-end .fx-btn{
+  margin: 0;
+  }
 
-#game-end .learnmore:link, #game-end .learnmore:visited {
-color: #47338f;
-text-decoration: underline;
-}
-#game-end .learnmore:hover, #game-end .learnmore:active {
-color: #47338f;
-text-decoration: none;
-}
-.fx-btn:link, .fx-btn:visited, .fx-btn:hover, .fx-btn:active {
-text-decoration: none;
-}
-.white {
-  color: #fff!important;
-}
-.dark {
-  color: #212529!important;
-}
+  #game-end .learnmore:link, #game-end .learnmore:visited {
+  color: #47338f;
+  text-decoration: underline;
+  }
+  #game-end .learnmore:hover, #game-end .learnmore:active {
+  color: #47338f;
+  text-decoration: none;
+  }
+  .fx-btn:link, .fx-btn:visited, .fx-btn:hover, .fx-btn:active {
+  text-decoration: none;
+  }
+  .white {
+    color: #fff!important;
+  }
+  .dark {
+    color: #212529!important;
+  }
 
-.modal-body .question p {
-  font-size: 16px!important;
+  .modal-body .question p {
+    font-size: 16px!important;
+  }
+
 }
