@@ -175,7 +175,7 @@ var game = {
   },
 
   processData: function(){    
-    if("data" in localStorage){
+    if("data" in localStorage) {
       var playerRanking = JSON.parse(localStorage.getItem("data"));
       playerRanking.sort(function(a,b){ return b.score - a.score; });
       playerRanking.forEach(function(player, i, arr) {
@@ -188,6 +188,25 @@ var game = {
       localStorage.setItem("rankingData", JSON.stringify(playerRanking));
       game.leaderboard(JSON.parse(localStorage.getItem("rankingData")));
     } 
+
+    $.ajax({
+      url: "https://r4nkt.com/api/v1/games/XGQVPL3469/players",
+      method: "GET",
+      contentType: "application/json",
+      cache: false,
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader("Authorization", "Bearer w2YjdIYWWwC82Ye9VDIke5xPx643wFQ5toWbMw89");
+        xhr.setRequestHeader("Accept", "application/json");
+      },
+      success: function (data) {
+        console.log('Success');
+        console.log("list of all players from r4nkt ", data);
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        console.log('Error');
+        console.log(textStatus);
+      }
+    });
   },
 
   leaderboard: function(data){
@@ -318,14 +337,6 @@ var game = {
     var sData = [];
     var calculateTimeScore = game.state.timePoints * 10;
     var finalScore = game.state.score + calculateTimeScore; 
-    // console.log(JSON.parse(localStorage.getItem("rankingData")));
-    // var myranking = JSON.parse(localStorage.getItem("rankingData"));
-    // let myRank = [];
-    // for (let i = 0; i < myranking.length; i++) {
-    //   if (myranking[i].id == id) {
-    //     myRank.push(myranking[i]);
-    //   }
-    // }  
 
     var finishedTime = 'Your Time '+ game.state.timer.text();
     var endText =
@@ -356,18 +367,20 @@ var game = {
     ];
 
     let leaderBoardDataScore = {
-      custom_leaderboard_id: "nexusleaderboard",
-      custom_player_id: md5(game.state.email.val()),        
-      name: uppercaseWords(game.state.fullname.val()),
-      score: finalScore,
-      date_time_utc: timeStamp.toISOString(),
-      addional_data: {
+      // custom_id: "nexusleaderboard",
+      custom_id: md5(game.state.email.val()),        
+      // name: uppercaseWords(game.state.fullname.val()),
+      custom_data: {
+        score: finalScore,
+        name: uppercaseWords(game.state.fullname.val()),
         email: game.state.email.val(),
         totalCorrectAnswer: game.state.correctAnswers,
         totalQuestion: game.state.numberOfQuestions,
         timeFinish: game.state.timer.text()
       }
     };
+
+    console.log("a", leaderBoardDataScore);
 
     var jsonData;
     if("data" in localStorage){
@@ -379,20 +392,15 @@ var game = {
     }  
 
     $.ajax({
-      url: "https://r4nkt.com/api/v1/games/XGQVPL3469/scores",
+      url: "https://r4nkt.com/api/v1/games/XGQVPL3469/players",
       method: "POST",
       data: JSON.stringify(leaderBoardDataScore),
       contentType: "application/json",
       cache: false,
-      // You can put your headers here...or use beforeSend, as seen below
-      // headers: {
-      //   "Authorization": "Bearer <your authorization key>",
-      //   "Accept": "application/json",
-      //   "Content-Type": "application/json" // or use contentType
-      // },
       beforeSend: function (xhr) {
         xhr.setRequestHeader("Authorization", "Bearer w2YjdIYWWwC82Ye9VDIke5xPx643wFQ5toWbMw89");
         xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.setRequestHeader("Accept", "application/json");
       },
       success: function (data) {
         console.log('Success');
