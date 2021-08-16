@@ -175,7 +175,7 @@ var game = {
   },
 
   processData: function(){    
-    if("data" in localStorage) {
+    if("data" in localStorage){
       var playerRanking = JSON.parse(localStorage.getItem("data"));
       playerRanking.sort(function(a,b){ return b.score - a.score; });
       playerRanking.forEach(function(player, i, arr) {
@@ -190,7 +190,7 @@ var game = {
     } 
 
     $.ajax({
-      url: "https://r4nkt.com/api/v1/games/XGQVPL3469/players",
+      url: "https://r4nkt.com/api/v1/games/XGQVPL3469/leaderboards/nexusleaderboard/rankings",
       method: "GET",
       contentType: "application/json",
       cache: false,
@@ -199,11 +199,9 @@ var game = {
         xhr.setRequestHeader("Accept", "application/json");
       },
       success: function (data) {
-        console.log('Success');
         console.log("list of all players from r4nkt ", data);
       },
       error: function (jqXHR, textStatus, errorThrown) {
-        console.log('Error');
         console.log(textStatus);
       }
     });
@@ -315,7 +313,6 @@ var game = {
     var nextQuestionIndex = game.state.questionsAnswered;
     var i = 1;
     var d = i += 1;
-    console.log(d, game.state.questionsAnswered);
     game.state.remainingQuestions.text(game.state.questionsAnswered+"/"+game.state.numberOfQuestions);
     $(game.state.questions[lastQuestionIndex]).fadeOut(400, function() {
       $(game.state.questions[nextQuestionIndex]).fadeIn(200);
@@ -337,7 +334,6 @@ var game = {
     var sData = [];
     var calculateTimeScore = game.state.timePoints * 10;
     var finalScore = game.state.score + calculateTimeScore; 
-
     var finishedTime = 'Your Time '+ game.state.timer.text();
     var endText =
       uppercaseWords(game.state.fullname.val())+', you answered <span class="score">'+game.state.correctAnswers+' of '+game.state.numberOfQuestions+"</span> questions correctly."+
@@ -367,20 +363,11 @@ var game = {
     ];
 
     let leaderBoardDataScore = {
-      // custom_id: "nexusleaderboard",
+      custom_id: "nexusleaderboard",
       custom_id: md5(game.state.email.val()),        
-      // name: uppercaseWords(game.state.fullname.val()),
-      custom_data: {
-        score: finalScore,
-        name: uppercaseWords(game.state.fullname.val()),
-        email: game.state.email.val(),
-        totalCorrectAnswer: game.state.correctAnswers,
-        totalQuestion: game.state.numberOfQuestions,
-        timeFinish: game.state.timer.text()
-      }
+      description: "",
+      score: finalScore,
     };
-
-    console.log("a", leaderBoardDataScore);
 
     var jsonData;
     if("data" in localStorage){
@@ -392,7 +379,7 @@ var game = {
     }  
 
     $.ajax({
-      url: "https://r4nkt.com/api/v1/games/XGQVPL3469/players",
+      url: "https://r4nkt.com/api/v1/games/XGQVPL3469/scores",
       method: "POST",
       data: JSON.stringify(leaderBoardDataScore),
       contentType: "application/json",
@@ -400,14 +387,11 @@ var game = {
       beforeSend: function (xhr) {
         xhr.setRequestHeader("Authorization", "Bearer w2YjdIYWWwC82Ye9VDIke5xPx643wFQ5toWbMw89");
         xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.setRequestHeader("Accept", "application/json");
       },
       success: function (data) {
-        console.log('Success');
         console.log(data);
       },
       error: function (jqXHR, textStatus, errorThrown) {
-        console.log('Error');
         console.log(textStatus);
       }
     }); 
