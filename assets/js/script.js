@@ -286,7 +286,8 @@ var game = {
 
   viewSelectedAnswer: function(data){    
     $(".preview-wrapper").html('');
-    $(".question").clone().appendTo(".preview-wrapper").removeAttr('style').css({"display": "block"});
+    $(".question").clone().appendTo(".preview-wrapper").removeAttr('style').css({"display":"block"});
+    $(".answers").css({"display":"inline-flex"});
     $('#viewanswerModal').modal('show');
   },
 
@@ -304,7 +305,7 @@ var game = {
 
   timesUp: function() {
     var endText =
-      "Looks like you’ve run out of time.<br />No worries. You can play up to 5 times a day.";
+      "Looks like you’ve run out of time.";
     game.state.questionsView.fadeOut(400, function() {
       game.state.timeOutText[0].innerHTML = endText;
       game.state.gameEndViewTimesUp.fadeIn(200);
