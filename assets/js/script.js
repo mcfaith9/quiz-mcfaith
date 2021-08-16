@@ -11,6 +11,7 @@ var game = {
     viewAnswer: $("#viewanswer"),
     gameContainer: $("#game"),
     previewContainer: $(".preview-wrapper"),
+    remainingQuestions: $(".remaining-questions"),
     playAgain: $(".play-again"),
     scoreNumber: $(".score-number"),
     questionsView: $(".questions"),
@@ -111,7 +112,7 @@ var game = {
       setTimeout(function(){ $("#welcome-div").css("display","none"); }, 1000)      
     );
     
-
+    game.state.remainingQuestions.text("0/"+game.state.numberOfQuestions);
     game.state.startButton.unbind("click touch");
   },
 
@@ -147,7 +148,7 @@ var game = {
   checkAnswer: function(answer) {
     if (answer.data("correct")) {
       game.state.correctAnswers++;
-      game.drawGaugeValue();
+      // game.drawGaugeValue();
       game.updateProgress(true);
       game.state.score = points += 100;
       // game.giveAnswerFeedback(answer);
@@ -161,11 +162,12 @@ var game = {
     // wait a second
     window.setTimeout(function() {
       //end game else go to next question
+      game.drawGaugeValue();
       if (game.state.questionsAnswered === game.state.numberOfQuestions) {        
         game.processData();
         game.endGame();        
       } else {        
-        game.goToNextQuestion();
+        game.goToNextQuestion();        
       }
     }, 1000);
 
@@ -206,9 +208,13 @@ var game = {
   },
 
   drawGaugeValue: function() {
+    // var currentValue =
+    //   100 /
+    //   (game.state.numberOfQuestions / (game.state.correctAnswers - 1)) /
+    //   100;
     var currentValue =
       100 /
-      (game.state.numberOfQuestions / (game.state.correctAnswers - 1)) /
+      (game.state.numberOfQuestions / (game.state.questionsAnswered - 1)) /
       100;
     var nextValue = currentValue + 100 / game.state.numberOfQuestions / 100;
 
@@ -287,9 +293,10 @@ var game = {
   goToNextQuestion: function() {
     var lastQuestionIndex = game.state.questionsAnswered - 1;
     var nextQuestionIndex = game.state.questionsAnswered;
-    var i = 0;
-    var d = i + 1;
-    console.log(d);
+    var i = 1;
+    var d = i += 1;
+    console.log(d, game.state.questionsAnswered);
+    game.state.remainingQuestions.text(game.state.questionsAnswered+"/"+game.state.numberOfQuestions);
     $(game.state.questions[lastQuestionIndex]).fadeOut(400, function() {
       $(game.state.questions[nextQuestionIndex]).fadeIn(200);
     });
@@ -317,20 +324,19 @@ var game = {
     //   if (myranking[i].id == id) {
     //     myRank.push(myranking[i]);
     //   }
-    // }    
+    // }  
+
     var finishedTime = 'Your Time '+ game.state.timer.text();
     var endText =
-      'You got <span class="score">' +
-      game.state.correctAnswers +
-      " out of " +
-      game.state.numberOfQuestions +
-      "</span><br> correct answer"+
+      'You got <span class="score">'+game.state.correctAnswers+' out of '+game.state.numberOfQuestions+"</span> correct answer"+
       "<br>"+uppercaseWords(game.state.fullname.val())+" you earn <span class='score'>"+finalScore+"</span> points.";
 
       game.state.questionsView.fadeOut(400, function() {
       game.state.gameEndText[0].innerHTML = endText;  
       game.state.gameFinishedTime[0].innerHTML = finishedTime;
       game.state.gameEndView.fadeIn(200);
+      game.state.remainingQuestions.text(game.state.questionsAnswered+"/"+game.state.numberOfQuestions);
+
       $(".time-group").fadeOut(1000).remove();
     });
     
@@ -354,7 +360,20 @@ var game = {
       localStorage.setItem("data", JSON.stringify(mData));
     } else {
       localStorage.setItem("data", JSON.stringify($data));
-    }    
+    }  
+
+    // $.ajax({
+    //   url: "https://api.r4nkt.com/v1/?key=w2YjdIYWWwC82Ye9VDIke5xPx643wFQ5toWbMw89",
+    //   type: "POST",
+    //   dataType: "json",
+    //   data: $data,
+    //   sucess: function(sucess){
+    //     console.log(sucess);
+    //   },
+    //   error: function(error){
+    //     console.log(error);
+    //   }
+    // });  
   }
 };
 

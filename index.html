@@ -24,7 +24,7 @@
         <section id="welcome-div">
           <!-- ADD BLOCK(S) HERE -->
           <!-- START: SHARE BLOCK -->
-          <div class="text-center fx-purple white-bg" style="padding:15px;height:100vh;">
+          <div class="text-center fx-purple" style="padding:15px;height:100vh;">
             <div class="container">
               <div class="" style="display: inline-block;">
                 <img src="assets/images/Nexus.png" width="200">
@@ -78,7 +78,8 @@
                         <div class="gauge-container" style="background-size: 100px 100px;">
                           <canvas id="gauge" class="gauge" width="240" height="240"></canvas>
                           <img src="assets/images/Nexus.png" width="125" style="position:absolute;top:58px;left:55px;">
-                          <div class="score-number">0</div>
+                          <!-- <div class="score-number">0</div> -->
+                          <div class="remaining-questions">1/12</div>
                         </div>
                       </div>
                       <div class="game-right-col col-md-6 col-md-sm-6">
@@ -138,7 +139,7 @@
                           <a href="#" class="fx-btn btn btn-dark rounded-pill play-again">Play again</a>
                         </div>                        
                         <div id="game-end">    
-                          <p id="yourTime" style="color:#47338f;margin:0;"></p>                      
+                          <strong id="yourTime" style="color:#47338f;margin:0;"></strong>                      
                           <p id="game-end-text" class="game-end-text"></p>
                           <p><a href="#" class="fx-btn btn btn-dark rounded-pill w-100" id="leaderboard">Leaderboard</a></p>
                           <p><a class="fx-btn btn btn-dark rounded-pill w-100" id="viewanswer" data-toggle="collapse" href="#collapsePreview" role="button" aria-expanded="false" aria-controls="collapsePreview">View Answer</a></p>
@@ -189,7 +190,7 @@
                       <h5 class="modal-title" id="leaderboardModalLabel">Leader Board</h5>
                     </div>
                     <div class="modal-body">
-                      <table class="table table-image">
+                      <table class="table table-striped table-image">
                         <thead style="text-align: center;">
                           <tr>
                             <th scope="col">Rank</th>
