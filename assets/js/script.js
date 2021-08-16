@@ -360,7 +360,7 @@ var game = {
       custom_player_id: md5(game.state.email.val()),        
       name: uppercaseWords(game.state.fullname.val()),
       score: finalScore,
-      date_time_utc: timeStamp.toUTCString(),
+      date_time_utc: timeStamp.toISOString(),
       addional_data: {
         email: game.state.email.val(),
         totalCorrectAnswer: game.state.correctAnswers,
@@ -381,7 +381,7 @@ var game = {
     $.ajax({
       url: "https://r4nkt.com/api/v1/games/XGQVPL3469/scores",
       method: "POST",
-      data: leaderBoardDataScore,
+      data: JSON.stringify(leaderBoardDataScore),
       contentType: "application/json",
       cache: false,
       // You can put your headers here...or use beforeSend, as seen below
@@ -392,7 +392,7 @@ var game = {
       // },
       beforeSend: function (xhr) {
         xhr.setRequestHeader("Authorization", "Bearer w2YjdIYWWwC82Ye9VDIke5xPx643wFQ5toWbMw89");
-        xhr.setRequestHeader("Accept", "application/json");
+        xhr.setRequestHeader("Content-Type", "application/json");
       },
       success: function (data) {
         console.log('Success');
