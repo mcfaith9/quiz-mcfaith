@@ -183,17 +183,14 @@ var game = {
                     ? i + 1
                     : arr[i-1].rank;
       });
-
       localStorage.removeItem("rankingData");
       localStorage.setItem("rankingData", JSON.stringify(playerRanking));
       game.leaderboard(JSON.parse(localStorage.getItem("rankingData")));
     } 
 
     $.ajax({
-      url: "https://r4nkt.com/api/v1/games/XGQVPL3469/leaderboards/nexusleaderboard/rankings",
+      url: "https://r4nkt.com/api/v1/games/XGQVPL3469/players",
       method: "GET",
-      contentType: "application/json",
-      cache: false,
       beforeSend: function (xhr) {
         xhr.setRequestHeader("Authorization", "Bearer w2YjdIYWWwC82Ye9VDIke5xPx643wFQ5toWbMw89");
         xhr.setRequestHeader("Accept", "application/json");
@@ -362,11 +359,20 @@ var game = {
       }
     ];
 
+    let customData = {
+      custom_data: {
+        email: game.state.email.val(),
+        totalCorrectAnswer: game.state.correctAnswers,
+        totalQuestion: game.state.numberOfQuestions,
+        score: finalScore,
+        timeFinish: game.state.timer.text(),
+        timeStamp: timeStamp.toUTCString()
+      }
+    };
     let leaderBoardDataScore = {
-      custom_id: "nexusleaderboard",
-      custom_id: md5(game.state.email.val()),        
-      description: "",
-      score: finalScore,
+      custom_id: md5(game.state.email.val()),
+      name: uppercaseWords(game.state.fullname.val()),        
+      custom_data: JSON.stringify(customData)
     };
 
     var jsonData;
@@ -379,14 +385,14 @@ var game = {
     }  
 
     $.ajax({
-      url: "https://r4nkt.com/api/v1/games/XGQVPL3469/scores",
+      url: "https://r4nkt.com/api/v1/games/XGQVPL3469/players",
       method: "POST",
       data: JSON.stringify(leaderBoardDataScore),
       contentType: "application/json",
       cache: false,
       beforeSend: function (xhr) {
         xhr.setRequestHeader("Authorization", "Bearer w2YjdIYWWwC82Ye9VDIke5xPx643wFQ5toWbMw89");
-        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.setRequestHeader("Accept", "application/json");
       },
       success: function (data) {
         console.log(data);
