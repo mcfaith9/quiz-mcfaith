@@ -91,8 +91,7 @@ var game = {
     });
     game.state.viewLeaderBoard.on("click touch", function(e) {
       e.preventDefault();
-      game.processData();
-      $('#leaderboardModal').modal('show');
+      game.processData();      
       // game.leaderboard(JSON.parse(localStorage.getItem("data")));      
     });
     game.state.playAgain.on("click touch", function(e) {
@@ -175,18 +174,7 @@ var game = {
   },
 
   processData: function(){    
-    // if("data" in localStorage){
-    //   var playerRanking = JSON.parse(localStorage.getItem("data"));
-    //   playerRanking.sort(function(a,b){ return b.score - a.score; });
-    //   playerRanking.forEach(function(player, i, arr) {
-    //     player.rank = i === 0 || player.score != arr[i-1].score
-    //                 ? i + 1
-    //                 : arr[i-1].rank;
-    //   });
-    //   localStorage.removeItem("rankingData");
-    //   localStorage.setItem("rankingData", JSON.stringify(playerRanking));
-    //   game.leaderboard(JSON.parse(localStorage.getItem("rankingData")));
-    // } 
+
     let playersScore;
     let playersData;
     $.ajax({
@@ -239,13 +227,16 @@ var game = {
     }     
 
     // $(".leaderboard-tbody").html("");
-    var dataTable = $('#leaderboard-table').DataTable();
+    var dataTable = $('#leaderboard-table').DataTable({
+      "bLengthChange": false,
+    });
     for (var i = 0, len = data.length; i < len; i++) {
       dataTable.row.add([Math.abs(data[i][1].rank)+1, data[i][0].custom_data.name, data[i][1].score]);
       // var dataTable = tbody(Math.abs(data[i][1].rank)+1, data[i][0].custom_data.name, data[i][1].score);
       // $(".leaderboard-tbody").append(appendData);
     } 
-    dataTable.draw();    
+    dataTable.draw(); 
+    $('#leaderboardModal').modal('show');   
   },
 
   drawGaugeValue: function() {
