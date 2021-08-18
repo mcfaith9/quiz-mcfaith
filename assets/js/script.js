@@ -319,7 +319,7 @@ var game = {
   viewSelectedAnswer: function(data){    
     $(".preview-wrapper").html('');
     $(".question").clone().appendTo(".preview-wrapper").removeAttr('style').css({"display":"block"});
-    $(".answers").css({"display":"inline-flex"});
+    //$(".answers").css({"display":"inline-flex"});
     $('#viewanswerModal').modal('show');
   },
 
