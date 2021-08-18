@@ -175,36 +175,60 @@ var game = {
   },
 
   processData: function(){    
-    if("data" in localStorage){
-      var playerRanking = JSON.parse(localStorage.getItem("data"));
-      playerRanking.sort(function(a,b){ return b.score - a.score; });
-      playerRanking.forEach(function(player, i, arr) {
-        player.rank = i === 0 || player.score != arr[i-1].score
-                    ? i + 1
-                    : arr[i-1].rank;
-      });
-      localStorage.removeItem("rankingData");
-      localStorage.setItem("rankingData", JSON.stringify(playerRanking));
-      game.leaderboard(JSON.parse(localStorage.getItem("rankingData")));
-    } 
-
+    // if("data" in localStorage){
+    //   var playerRanking = JSON.parse(localStorage.getItem("data"));
+    //   playerRanking.sort(function(a,b){ return b.score - a.score; });
+    //   playerRanking.forEach(function(player, i, arr) {
+    //     player.rank = i === 0 || player.score != arr[i-1].score
+    //                 ? i + 1
+    //                 : arr[i-1].rank;
+    //   });
+    //   localStorage.removeItem("rankingData");
+    //   localStorage.setItem("rankingData", JSON.stringify(playerRanking));
+    //   game.leaderboard(JSON.parse(localStorage.getItem("rankingData")));
+    // } 
+    let playersScore;
+    let playersData;
     $.ajax({
-      url: "https://r4nkt.com/api/v1/games/XGQVPL3469/players",
+      url: "https://r4nkt.com/api/v1/games/XGQVPL3469/leaderboards/nexusleaderboard/rankings",
       method: "GET",
       beforeSend: function (xhr) {
         xhr.setRequestHeader("Authorization", "Bearer w2YjdIYWWwC82Ye9VDIke5xPx643wFQ5toWbMw89");
         xhr.setRequestHeader("Accept", "application/json");
       },
-      success: function (data) {
-        console.log("list of all players from r4nkt ", data);
+      success: function (data) {    
+        playersScore = data;  
+        check1stRequest = 1;
+        $.ajax({
+          url: "https://r4nkt.com/api/v1/games/XGQVPL3469/players",
+          method: "GET",
+          beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization", "Bearer w2YjdIYWWwC82Ye9VDIke5xPx643wFQ5toWbMw89");
+            xhr.setRequestHeader("Accept", "application/json");
+          },
+          success: function (data) {    
+            playersData = data;    
+            check2ndRequest = 1;
+
+            let result = playersData.data.map(item => {
+              let result = playersScore.data.find(item2 => item2.custom_player_id === item.custom_id)
+              return [item, result]
+            });
+            game.leaderboard(result);
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+            console.log(textStatus);
+          }
+        });
       },
       error: function (jqXHR, textStatus, errorThrown) {
         console.log(textStatus);
       }
-    });
+    });      
   },
 
-  leaderboard: function(data){
+  leaderboard: function(data){    
+    console.log("this data", data);
     function tbody(ranking, name, points){
       var tbodyData = '<tr>'+
                       '<th scope="row">'+ranking+'</th>'+
@@ -214,11 +238,14 @@ var game = {
       return tbodyData;
     }     
 
-    $(".leaderboard-tbody").html("");
+    // $(".leaderboard-tbody").html("");
+    var dataTable = $('#leaderboard-table').DataTable();
     for (var i = 0, len = data.length; i < len; i++) {
-      var appendData = tbody(Math.abs(data[i].rank), data[i].name, data[i].score);
-      $(".leaderboard-tbody").append(appendData);
-    }   
+      dataTable.row.add([Math.abs(data[i][1].rank)+1, data[i][0].custom_data.name, data[i][1].score]);
+      // var dataTable = tbody(Math.abs(data[i][1].rank)+1, data[i][0].custom_data.name, data[i][1].score);
+      // $(".leaderboard-tbody").append(appendData);
+    } 
+    dataTable.draw();    
   },
 
   drawGaugeValue: function() {
@@ -360,19 +387,25 @@ var game = {
     ];
 
     let customData = {
-      custom_data: {
+        name: uppercaseWords(game.state.fullname.val()),
         email: game.state.email.val(),
         totalCorrectAnswer: game.state.correctAnswers,
         totalQuestion: game.state.numberOfQuestions,
         score: finalScore,
         timeFinish: game.state.timer.text(),
         timeStamp: timeStamp.toUTCString()
-      }
     };
-    let leaderBoardDataScore = {
+
+    let playersData = {
       custom_id: md5(game.state.email.val()),
       name: uppercaseWords(game.state.fullname.val()),        
       custom_data: JSON.stringify(customData)
+    };
+
+    let playersScore = {
+      custom_leaderboard_id: "nexusleaderboard",
+      custom_player_id: md5(game.state.email.val()),
+      score: finalScore
     };
 
     var jsonData;
@@ -387,7 +420,23 @@ var game = {
     $.ajax({
       url: "https://r4nkt.com/api/v1/games/XGQVPL3469/players",
       method: "POST",
-      data: JSON.stringify(leaderBoardDataScore),
+      data: JSON.stringify(playersData),
+      contentType: "application/json",
+      cache: false,
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader("Authorization", "Bearer w2YjdIYWWwC82Ye9VDIke5xPx643wFQ5toWbMw89");
+        xhr.setRequestHeader("Accept", "application/json");
+      },
+      success: function (data) {
+        console.log(data);
+      },
+      error: function (jqXHR, textStatus, errorThrown) {}
+    }); 
+
+    $.ajax({
+      url: "https://r4nkt.com/api/v1/games/XGQVPL3469/scores",
+      method: "POST",
+      data: JSON.stringify(playersScore),
       contentType: "application/json",
       cache: false,
       beforeSend: function (xhr) {
@@ -400,7 +449,7 @@ var game = {
       error: function (jqXHR, textStatus, errorThrown) {
         console.log(textStatus);
       }
-    }); 
+    });
   }
 };
 

@@ -15,6 +15,7 @@
 
   <link rel="stylesheet" type="text/css" href="assets/css/style.css">
   <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
 </head>
 <body id="fx-respond">  
   <div id="container">
@@ -153,7 +154,7 @@
                       <h5 class="modal-title" id="leaderboardModalLabel">Leader Board</h5>
                     </div>
                     <div class="modal-body">
-                      <table class="table table-striped table-image">
+                      <table id="leaderboard-table" class="table table-striped table-image">
                         <thead style="text-align: center;">
                           <tr>
                             <th scope="col">Rank</th>
@@ -163,7 +164,7 @@
                         </thead>
                         <tbody class="leaderboard-tbody" style="text-align: center;">
                           <tr>
-                            <th scope="row">1</th>
+                            <th data-sortable="true" data-sorter="numeric" scope="row">1</th>
                             <td>Marc Louie</td>
                             <td>1000</td>
                           </tr>
@@ -184,6 +185,7 @@
     </div>
   </div> 
   <script type="text/javascript" src="assets/js/jquery-3.6.0.min.js"></script> 
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
   <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="assets/js/script.js"></script>
   <script type="text/javascript" src="assets/js/md5.min.js"></script>
