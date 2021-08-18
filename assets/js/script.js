@@ -3,6 +3,18 @@ var arrayPoints = [];
 var timeStamp = new Date();
 const uppercaseWords = str => str.replace(/^(.)|\s+(.)/g, c => c.toUpperCase());
 var points = 0;
+var dataTable = $('#leaderboard-table').DataTable({
+  "bLengthChange": false,
+  "bFilter": false,
+  "bInfo": false,
+  "bPaginate": false,
+  columnDefs: [
+    {
+        targets: ['_all'],
+        className: 'mdc-data-table__cell'
+    }
+  ]
+});
 var game = {
   state: {
     startButton: $("#start-button"),
@@ -68,11 +80,6 @@ var game = {
           $("#game-rules").collapse("hide");
           $("#start-button").attr('disabled', true).addClass("disabled");
         }
-        // if($("#fullname").val().length != 0 && $("#emailaddress").val().length != 0){
-        //   $("#start-button").attr('disabled', false).removeClass("disabled");
-        // } else {
-        //   $("#start-button").attr('disabled', true).addClass("disabled");
-        // }
       });
     });
     game.state.credentialsButton.on("click touch", function(e) {
@@ -215,34 +222,16 @@ var game = {
     });      
   },
 
-  leaderboard: function(data){    
-    function tbody(ranking, name, points){
-      var tbodyData = '<tr>'+
-                      '<th scope="row">'+ranking+'</th>'+
-                      '<td>'+name+'</td>'+
-                      '<td>'+points+'</td>'+
-                      '</tr>';
-      return tbodyData;
-    }     
-
-    // $(".leaderboard-tbody").html("");
-    var dataTable = $('#leaderboard-table').DataTable({
-      "bLengthChange": false,
-    });
-    for (var i = 0, len = data.length; i < len; i++) {
+  leaderboard: function(data) {     
+    for (var i = 0, len = data.length; i < len; i++) {      
       dataTable.row.add([Math.abs(data[i][1].rank)+1, data[i][0].custom_data.name, data[i][1].score]);
-      // var dataTable = tbody(Math.abs(data[i][1].rank)+1, data[i][0].custom_data.name, data[i][1].score);
-      // $(".leaderboard-tbody").append(appendData);
-    } 
+    }     
     dataTable.draw(); 
+    dataTable.clear();
     $('#leaderboardModal').modal('show');   
   },
 
   drawGaugeValue: function() {
-    // var currentValue =
-    //   100 /
-    //   (game.state.numberOfQuestions / (game.state.correctAnswers - 1)) /
-    //   100;
     var currentValue =
       100 /
       (game.state.numberOfQuestions / (game.state.questionsAnswered - 1)) /
