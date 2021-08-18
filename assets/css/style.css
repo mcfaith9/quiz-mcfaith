@@ -1,6 +1,10 @@
 html, body {
-    overflow-x: hidden; /*REMOVES HORIZONTAL SCROLLBAR THE ABOVE CREATES*/
-    margin-top: 0px; /*COMPENSATES THE HORIZONTAL SCROLLBAR*/
+  overflow-x: hidden;
+  margin-top: 0px;
+}
+
+.fa, .fas {
+  font-size: 20px;
 }
 
 .score{

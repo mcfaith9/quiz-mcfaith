@@ -4,6 +4,15 @@ var timeStamp = new Date();
 const uppercaseWords = str => str.replace(/^(.)|\s+(.)/g, c => c.toUpperCase());
 var points = 0;
 var dataTable = $('#leaderboard-table').DataTable({
+  "createdRow": function(row, data, index) {
+    if(data[0] == 1) {
+      $('td', row).eq(0).html("<i class='fas fa-medal' style='color:gold!important;'></i> " + data[0]);
+    } else if(data[0] == 2) {
+      $('td', row).eq(0).html("<i class='fas fa-medal' style='color:silver!important;'></i> " + data[0]);
+    } else if(data[0] == 3) {
+      $('td', row).eq(0).html("<i class='fas fa-medal' style='color:#CD7F32!important;'></i> " + data[0]);
+    }
+  },
   "bLengthChange": false,
   "bFilter": false,
   "bInfo": false,
