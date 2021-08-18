@@ -216,7 +216,6 @@ var game = {
   },
 
   leaderboard: function(data){    
-    console.log("this data", data);
     function tbody(ranking, name, points){
       var tbodyData = '<tr>'+
                       '<th scope="row">'+ranking+'</th>'+
@@ -418,10 +417,10 @@ var game = {
         xhr.setRequestHeader("Authorization", "Bearer w2YjdIYWWwC82Ye9VDIke5xPx643wFQ5toWbMw89");
         xhr.setRequestHeader("Accept", "application/json");
       },
-      success: function (data) {
-        console.log(data);
-      },
-      error: function (jqXHR, textStatus, errorThrown) {}
+      success: function (data) {},
+      error: function (jqXHR, textStatus, errorThrown) {
+        console.log(textStatus);
+      }
     }); 
 
     $.ajax({
@@ -434,9 +433,7 @@ var game = {
         xhr.setRequestHeader("Authorization", "Bearer w2YjdIYWWwC82Ye9VDIke5xPx643wFQ5toWbMw89");
         xhr.setRequestHeader("Accept", "application/json");
       },
-      success: function (data) {
-        console.log(data);
-      },
+      success: function (data) {},
       error: function (jqXHR, textStatus, errorThrown) {
         console.log(textStatus);
       }
