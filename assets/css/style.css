@@ -18,9 +18,10 @@ html, body {
   font-weight: bold;
 }
 .remaining-questions{
-  position: absolute;
-  top: 175px;
-  left: 85px;
+  margin-top: calc(-80px + 1vw);
+  /*position: absolute;*/
+  /*top: 175px;*/
+  /*left: 65px;*/
   font-size: 38px;
   color: #47338f;
   font-weight: bold;
@@ -140,13 +141,15 @@ height: 14px;
 width: 25px;
 }
 .progress-bar-custom {
-text-align: center;
+ text-align: center;
+ position: fixed;
+  z-index: 99999999;
 }
 .indicator {
 border-bottom: 6px solid #e5e5e5;
 display: inline-block;
-margin: 0 0.1rem;
-width: 40px;
+/*margin: 0 0.1rem;*/
+width: 25px;
 height: 50px;
 }
 .indicator.current {
@@ -154,11 +157,9 @@ background: none;
 border-color: #47338f;
 }
 .indicator.correct {
-/*background: url('images/icon-correct.svg') no-repeat center;*/
 border-color: #1fca23;
 }
 .indicator.incorrect {
-/*background: url('images/icon-incorrect.svg') no-repeat center;*/
 border-color: #fb0f1b;
 }
 #game-end-times-up {

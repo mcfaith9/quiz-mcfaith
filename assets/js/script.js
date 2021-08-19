@@ -47,6 +47,7 @@ var game = {
     startButton: $("#start-button"),
     credentialsButton: $("#start-quiz"),
     viewLeaderBoard: $("#leaderboard"),
+    preLeaderBoardBtn: $("#preLeaderboard"),
     viewAnswer: $("#viewanswer"),
     gameContainer: $("#game"),
     previewContainer: $(".preview-wrapper"),
@@ -69,7 +70,8 @@ var game = {
     email: $("#emailaddress"),
     APIToken: "w2YjdIYWWwC82Ye9VDIke5xPx643wFQ5toWbMw89",
     gameID: "XGQVPL3469",
-    APIEndpoint: "https://api.r4nkt.com/v1/",
+    leaderboardId: "nexusleaderboard",
+    APIEndpoint: "https://r4nkt.com/api/v1/games/",
     questionsAnswered: 0,
     correctAnswers: 0,
     correctPoints: 100,
@@ -124,10 +126,14 @@ var game = {
     });
     game.state.viewLeaderBoard.on("click touch", function(e) {
       e.preventDefault();   
-      game.processData();
+      game.processData();      
+      game.leaderboard();
       $('#leaderboardModal').modal('show');
-      $(this).attr('disabled', true).addClass("disabled"); 
-      game.leaderboard();    
+    });
+    game.state.preLeaderBoardBtn.on("click touch", function(e) {
+      e.preventDefault();
+      game.preLeaderBoard();
+      $('#leaderboardModal').modal('show');
     });
     game.state.playAgain.on("click touch", function(e) {
       e.preventDefault();
@@ -145,7 +151,9 @@ var game = {
       game.startTimer(),
       setTimeout(function(){ $("#welcome-div").css("display","none"); }, 1000)      
     );
-    
+
+    localStorage.removeItem("_pID");
+    localStorage.setItem("_pID", md5(game.state.email.val()+"_"+timeStamp));
     game.state.remainingQuestions.text("0/"+game.state.numberOfQuestions);
     game.state.startButton.unbind("click touch");
   },
@@ -192,8 +200,32 @@ var game = {
     game.state.questionsAnswered++;
     window.setTimeout(function() {
       game.drawGaugeValue();
-      if (game.state.questionsAnswered === game.state.numberOfQuestions) {    
-        game.endGame();        
+      if (game.state.questionsAnswered === game.state.numberOfQuestions) { 
+        // $.ajax({
+        //     url: game.state.APIEndpoint+game.state.gameID+"/leaderboards/nexusleaderboard/players/"+localStorage.getItem('_pID')+"/rankings",
+        //     method: "GET",
+        //     tryCount : 0,
+        //     retryLimit : 3,
+        //     beforeSend: function (xhr) {
+        //       xhr.setRequestHeader("Authorization", "Bearer w2YjdIYWWwC82Ye9VDIke5xPx643wFQ5toWbMw89");
+        //       xhr.setRequestHeader("Accept", "application/json");
+        //     },
+        //     success: function (data) {
+        //       console.log(data);
+        //     },
+        //     error: function (jqXHR, textStatus, errorThrown) {
+        //       if (textStatus == 'timeout') {
+        //         this.tryCount++;
+        //         if (this.tryCount <= this.retryLimit) {
+        //           $.ajax(this);
+        //           return;
+        //         }            
+        //         return;
+        //       }
+        //       console.log(textStatus);
+        //     }
+        //   }); 
+          game.endGame();      
       } else {        
         game.goToNextQuestion();        
       }
@@ -203,8 +235,7 @@ var game = {
 
   processData: function() {    
     let playersScore;
-    let playersData;
-    localStorage.removeItem("dataTablesData");
+    let playersData;  
     $.ajax({
       url: "https://r4nkt.com/api/v1/games/XGQVPL3469/leaderboards/nexusleaderboard/rankings",
       method: "GET",
@@ -235,10 +266,11 @@ var game = {
                 score: result[i][1].score
               });                               
             }   
+            localStorage.removeItem("dataTablesData");
             localStorage.setItem("dataTablesData", JSON.stringify(processData));
-            dataTable.clear().draw();
+            dataTable.clear().draw();            
             dataTable.rows.add(JSON.parse(localStorage.getItem('dataTablesData'))).draw();       
-            dataTable.columns.adjust().draw(); 
+            dataTable.columns.adjust().draw();             
           },
           error: function (jqXHR, textStatus, errorThrown) {
             console.log(textStatus);
@@ -249,16 +281,17 @@ var game = {
         console.log(textStatus);
       }
     });
-    // Do something here? idk hahaha 
   },
-
   leaderboard: function(data) { 
     dataTable.clear().draw();
     dataTable.rows.add(JSON.parse(localStorage.getItem('dataTablesData'))).draw();       
-    dataTable.columns.adjust().draw();   
-    game.state.viewLeaderBoard.attr('disabled', false).removeClass("disabled");
+    dataTable.columns.adjust().draw();       
+  },  
+  preLeaderBoard: function() {
+    dataTable.clear().draw();
+    dataTable.rows.add(JSON.parse(localStorage.getItem('dataTablesData'))).draw();       
+    dataTable.columns.adjust().draw();
   },
-
   drawGaugeValue: function() {
     var currentValue =
       100 /
@@ -308,7 +341,6 @@ var game = {
     };
     draw(currentValue, nextValue);
   },
-
   updateProgress: function(correct) {
     $(game.state.indicators[game.state.questionsAnswered]).addClass(
       correct ? "correct" : "incorrect"
@@ -318,7 +350,6 @@ var game = {
       "current"
     );
   },
-
   giveAnswerFeedback: function(answer) {
     var answerGroup = answer.parent().parent().find(".answer");
     for (var i = 0; i < answerGroup.length; i++) {
@@ -330,13 +361,11 @@ var game = {
       }
     }   
   },
-
-  viewSelectedAnswer: function(data){    
+  viewSelectedAnswer: function(data) {    
     $(".preview-wrapper").html('');
     $(".question").clone().appendTo(".preview-wrapper").removeAttr('style').css({"display":"block"});
     $('#viewanswerModal').modal('show');
   },
-
   goToNextQuestion: function() {
     var lastQuestionIndex = game.state.questionsAnswered - 1;
     var nextQuestionIndex = game.state.questionsAnswered;
@@ -347,7 +376,6 @@ var game = {
       $(game.state.questions[nextQuestionIndex]).fadeIn(200);
     });
   },
-
   timesUp: function() {
     var endText =
       "Looks like you’ve run out of time.";
@@ -357,10 +385,10 @@ var game = {
     });
   },
 
-  endGame: function() {  
-    var _id = md5(game.state.email.val()+"_"+timeStamp);
+  endGame: function() {      
     var mData = [];
     var sData = [];
+    var _id = localStorage.getItem('_pID');
     var calculateTimeScore = game.state.timePoints * 10;
     var finalScore = game.state.score + calculateTimeScore; 
     var finishedTime = 'Your Time '+ game.state.timer.text();
@@ -378,17 +406,16 @@ var game = {
     });
 
     let customData = {
-        name: uppercaseWords(game.state.fullname.val()),
-        email: game.state.email.val(),
-        totalCorrectAnswer: game.state.correctAnswers,
-        totalQuestion: game.state.numberOfQuestions,
-        score: finalScore,
-        timeFinish: game.state.timer.text(),
-        timeStamp: timeStamp.toUTCString()
+      name: uppercaseWords(game.state.fullname.val()),
+      email: game.state.email.val(),
+      totalCorrectAnswer: game.state.correctAnswers,
+      totalQuestion: game.state.numberOfQuestions,
+      score: finalScore,
+      timeFinish: game.state.timer.text(),
+      timeStamp: timeStamp.toUTCString()
     };
 
     let playersData = {
-      // custom_id: _id,
       name: uppercaseWords(game.state.fullname.val()),        
       custom_data: JSON.stringify(customData)
     };
