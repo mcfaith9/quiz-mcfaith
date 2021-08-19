@@ -2,6 +2,11 @@ html, body {
   overflow-x: hidden;
   margin-top: 0px;
 }
+.pagination {
+  text-align: center!important;
+  align-items: center!important;
+  display: block!important;
+}
 
 .fa, .fas {
   font-size: 20px;

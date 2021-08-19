@@ -1,32 +1,92 @@
+const uppercaseWords = str => str.replace(/^(.)|\s+(.)/g, c => c.toUpperCase());
 var selectedAnswer = [];
 var arrayPoints = [];
 var timeStamp = new Date();
-const uppercaseWords = str => str.replace(/^(.)|\s+(.)/g, c => c.toUpperCase());
 var points = 0;
-var dataTable = $('#leaderboard-table').DataTable({
-  "createdRow": function(row, data, index) {
-    if(data[0] == 1) {
-      $('td', row).eq(0).html("<i class='fas fa-medal' style='color:gold!important;'></i> " + data[0]);
-    } else if(data[0] == 2) {
-      $('td', row).eq(0).html("<i class='fas fa-medal' style='color:silver!important;'></i> " + data[0]);
-    } else if(data[0] == 3) {
-      $('td', row).eq(0).html("<i class='fas fa-medal' style='color:#CD7F32!important;'></i> " + data[0]);
-    }
+
+let playersScore;
+let playersData;
+localStorage.removeItem("dataTablesData");
+$.ajax({
+  url: "https://r4nkt.com/api/v1/games/XGQVPL3469/leaderboards/nexusleaderboard/rankings",
+  method: "GET",
+  beforeSend: function (xhr) {
+    xhr.setRequestHeader("Authorization", "Bearer w2YjdIYWWwC82Ye9VDIke5xPx643wFQ5toWbMw89");
+    xhr.setRequestHeader("Accept", "application/json");
   },
+  success: function (data) {    
+    playersScore = data;  
+    $.ajax({
+      url: "https://r4nkt.com/api/v1/games/XGQVPL3469/players",
+      method: "GET",
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader("Authorization", "Bearer w2YjdIYWWwC82Ye9VDIke5xPx643wFQ5toWbMw89");
+        xhr.setRequestHeader("Accept", "application/json");
+      },
+      success: function (data) {    
+        playersData = data;    
+        let result = playersData.data.map(item => {
+          let result = playersScore.data.find(item2 => item2.custom_player_id === item.custom_id)
+          return [item, result]
+        });             
+        var processData = [];  
+        for (var i = 0, len = result.length; i < len; i++) {  
+          processData.push({
+            rank: Math.abs(result[i][1].rank)+1,
+            name: result[i][0].custom_data.name,
+            score: result[i][1].score
+          });                               
+        }   
+        localStorage.setItem("dataTablesData", JSON.stringify(processData));
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        console.log(textStatus);
+      }
+    });
+  },
+  error: function (jqXHR, textStatus, errorThrown) {
+    console.log(textStatus);
+  }
+});
+
+var dataTable = $('#leaderboard-table').DataTable({
+  paging: true,
+  info: false,
+  searching: false,
+  ordering: true,
+  destroy: true,
+  pageLength : 7,
+  pagingType: "full",
   "bLengthChange": false,
-  "bFilter": false,
-  "bInfo": false,
-  "bPaginate": false,
+  "order": [[2, 'desc']],
+  columns :[
+    {
+      data: 'rank',
+      render: function function_name(row, data, index) {
+        if(row == 1) {
+          return "<i class='fas fa-medal' style='color:gold!important;'></i> ";
+        } else if(row == 2) {
+          return "<i class='fas fa-medal' style='color:silver!important;'></i> ";
+        } else if(row == 3) {
+          return "<i class='fas fa-medal' style='color:#CD7F32!important;'></i> ";
+        }
+        return row;        
+      }
+    }, 
+    {data: 'name'},
+    {data: 'score'},
+  ],  
   "oLanguage": {
     "sEmptyTable": "<br><i class='fas fa-circle-notch fa-spin'></i>"
   },
   columnDefs: [
     {
-        targets: ['_all'],
-        className: 'mdc-data-table__cell'
+      targets: ['_all'],
+      className: 'mdc-data-table__cell'
     }
   ]
 });
+
 var game = {
   state: {
     startButton: $("#start-button"),
@@ -70,7 +130,6 @@ var game = {
 
   registerEventHandlers: function() {
     game.state.answers.on("click touch", function(e) {
-      //e.preventDefault();
       game.checkAnswer($(this));
     });
     game.state.credentialsButton.on("click touch", function(e) {
@@ -86,7 +145,6 @@ var game = {
       $(".form-control").keyup(function(){
         if($("#fullname").val().length != 0 && validateEmail($("#emailaddress").val()) == true){
           $("#game-rules").collapse("show");
-          // $("#user-info-wrapper").collapse("hide");
           $("#start-button").attr('disabled', false).removeClass("disabled");
         } else {
           $("#game-rules").collapse("hide");
@@ -109,10 +167,10 @@ var game = {
       game.viewSelectedAnswer(selectedAnswer);
     });
     game.state.viewLeaderBoard.on("click touch", function(e) {
-      e.preventDefault();
-      game.processData();      
+      e.preventDefault();   
       $('#leaderboardModal').modal('show');
-      $(this).attr('disabled', true).addClass("disabled");     
+      $(this).attr('disabled', true).addClass("disabled"); 
+      game.leaderboard();    
     });
     game.state.playAgain.on("click touch", function(e) {
       e.preventDefault();
@@ -167,77 +225,33 @@ var game = {
   checkAnswer: function(answer) {
     if (answer.data("correct")) {
       game.state.correctAnswers++;
-      // game.drawGaugeValue();
       game.updateProgress(true);
       game.state.score = points += 100;
-      // game.giveAnswerFeedback(answer);
     } else {
       game.updateProgress(false);
       game.state.score = points -= 100;
-      // game.giveAnswerFeedback(answer);
     }
     game.giveAnswerFeedback(answer);
     game.state.questionsAnswered++;
-    // wait a second
     window.setTimeout(function() {
-      //end game else go to next question
       game.drawGaugeValue();
-      if (game.state.questionsAnswered === game.state.numberOfQuestions) {        
-        // game.processData();
+      if (game.state.questionsAnswered === game.state.numberOfQuestions) {    
         game.endGame();        
       } else {        
         game.goToNextQuestion();        
       }
     }, 1000);
-
     var data = selectedAnswer.push(answer.data().i);
   },
 
-  processData: function(){    
-
-    let playersScore;
-    let playersData;
-    $.ajax({
-      url: "https://r4nkt.com/api/v1/games/XGQVPL3469/leaderboards/nexusleaderboard/rankings",
-      method: "GET",
-      beforeSend: function (xhr) {
-        xhr.setRequestHeader("Authorization", "Bearer w2YjdIYWWwC82Ye9VDIke5xPx643wFQ5toWbMw89");
-        xhr.setRequestHeader("Accept", "application/json");
-      },
-      success: function (data) {    
-        playersScore = data;  
-        $.ajax({
-          url: "https://r4nkt.com/api/v1/games/XGQVPL3469/players",
-          method: "GET",
-          beforeSend: function (xhr) {
-            xhr.setRequestHeader("Authorization", "Bearer w2YjdIYWWwC82Ye9VDIke5xPx643wFQ5toWbMw89");
-            xhr.setRequestHeader("Accept", "application/json");
-          },
-          success: function (data) {    
-            playersData = data;    
-            let result = playersData.data.map(item => {
-              let result = playersScore.data.find(item2 => item2.custom_player_id === item.custom_id)
-              return [item, result]
-            });
-            game.leaderboard(result);
-          },
-          error: function (jqXHR, textStatus, errorThrown) {
-            console.log(textStatus);
-          }
-        });
-      },
-      error: function (jqXHR, textStatus, errorThrown) {
-        console.log(textStatus);
-      }
-    });      
+  processData: function() {    
+    // Do something here? idk hahaha 
   },
 
-  leaderboard: function(data) {     
-    for (var i = 0, len = data.length; i < len; i++) {      
-      dataTable.row.add([Math.abs(data[i][1].rank)+1, data[i][0].custom_data.name, data[i][1].score]);
-    }     
-    dataTable.draw(); 
-    dataTable.clear();
+  leaderboard: function(data) { 
+    dataTable.clear().draw();
+    dataTable.rows.add(JSON.parse(localStorage.getItem('dataTablesData'))).draw();       
+    dataTable.columns.adjust().draw();   
     game.state.viewLeaderBoard.attr('disabled', false).removeClass("disabled");
   },
 
@@ -304,7 +318,6 @@ var game = {
   giveAnswerFeedback: function(answer) {
     var answerGroup = answer.parent().parent().find(".answer");
     for (var i = 0; i < answerGroup.length; i++) {
-      // disable extra clicks
       answerGroup[i].disabled = true;
       if ($(answerGroup[i]).data("correct")) {
         $(answerGroup[i]).parent().addClass("correct");
@@ -317,7 +330,6 @@ var game = {
   viewSelectedAnswer: function(data){    
     $(".preview-wrapper").html('');
     $(".question").clone().appendTo(".preview-wrapper").removeAttr('style').css({"display":"block"});
-    //$(".answers").css({"display":"inline-flex"});
     $('#viewanswerModal').modal('show');
   },
 
