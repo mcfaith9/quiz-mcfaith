@@ -4,51 +4,6 @@ var arrayPoints = [];
 var timeStamp = new Date();
 var points = 0;
 
-let playersScore;
-let playersData;
-localStorage.removeItem("dataTablesData");
-$.ajax({
-  url: "https://r4nkt.com/api/v1/games/XGQVPL3469/leaderboards/nexusleaderboard/rankings",
-  method: "GET",
-  beforeSend: function (xhr) {
-    xhr.setRequestHeader("Authorization", "Bearer w2YjdIYWWwC82Ye9VDIke5xPx643wFQ5toWbMw89");
-    xhr.setRequestHeader("Accept", "application/json");
-  },
-  success: function (data) {    
-    playersScore = data;  
-    $.ajax({
-      url: "https://r4nkt.com/api/v1/games/XGQVPL3469/players",
-      method: "GET",
-      beforeSend: function (xhr) {
-        xhr.setRequestHeader("Authorization", "Bearer w2YjdIYWWwC82Ye9VDIke5xPx643wFQ5toWbMw89");
-        xhr.setRequestHeader("Accept", "application/json");
-      },
-      success: function (data) {    
-        playersData = data;    
-        let result = playersData.data.map(item => {
-          let result = playersScore.data.find(item2 => item2.custom_player_id === item.custom_id)
-          return [item, result]
-        });             
-        var processData = [];  
-        for (var i = 0, len = result.length; i < len; i++) {  
-          processData.push({
-            rank: Math.abs(result[i][1].rank)+1,
-            name: result[i][0].custom_data.name,
-            score: result[i][1].score
-          });                               
-        }   
-        localStorage.setItem("dataTablesData", JSON.stringify(processData));
-      },
-      error: function (jqXHR, textStatus, errorThrown) {
-        console.log(textStatus);
-      }
-    });
-  },
-  error: function (jqXHR, textStatus, errorThrown) {
-    console.log(textStatus);
-  }
-});
-
 var dataTable = $('#leaderboard-table').DataTable({
   paging: true,
   info: false,
@@ -126,6 +81,7 @@ var game = {
 
   init: function() {
     game.registerEventHandlers();
+    game.processData();
   },
 
   registerEventHandlers: function() {
@@ -168,6 +124,7 @@ var game = {
     });
     game.state.viewLeaderBoard.on("click touch", function(e) {
       e.preventDefault();   
+      game.processData();
       $('#leaderboardModal').modal('show');
       $(this).attr('disabled', true).addClass("disabled"); 
       game.leaderboard();    
@@ -245,6 +202,53 @@ var game = {
   },
 
   processData: function() {    
+    let playersScore;
+    let playersData;
+    localStorage.removeItem("dataTablesData");
+    $.ajax({
+      url: "https://r4nkt.com/api/v1/games/XGQVPL3469/leaderboards/nexusleaderboard/rankings",
+      method: "GET",
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader("Authorization", "Bearer w2YjdIYWWwC82Ye9VDIke5xPx643wFQ5toWbMw89");
+        xhr.setRequestHeader("Accept", "application/json");
+      },
+      success: function (data) {    
+        playersScore = data;  
+        $.ajax({
+          url: "https://r4nkt.com/api/v1/games/XGQVPL3469/players",
+          method: "GET",
+          beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization", "Bearer w2YjdIYWWwC82Ye9VDIke5xPx643wFQ5toWbMw89");
+            xhr.setRequestHeader("Accept", "application/json");
+          },
+          success: function (data) {    
+            playersData = data;    
+            let result = playersData.data.map(item => {
+              let result = playersScore.data.find(item2 => item2.custom_player_id === item.custom_id)
+              return [item, result]
+            });             
+            var processData = [];  
+            for (var i = 0, len = result.length; i < len; i++) {  
+              processData.push({
+                rank: Math.abs(result[i][1].rank)+1,
+                name: result[i][0].custom_data.name,
+                score: result[i][1].score
+              });                               
+            }   
+            localStorage.setItem("dataTablesData", JSON.stringify(processData));
+            dataTable.clear().draw();
+            dataTable.rows.add(JSON.parse(localStorage.getItem('dataTablesData'))).draw();       
+            dataTable.columns.adjust().draw(); 
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+            console.log(textStatus);
+          }
+        });
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        console.log(textStatus);
+      }
+    });
     // Do something here? idk hahaha 
   },
 
