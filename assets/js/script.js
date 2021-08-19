@@ -17,6 +17,9 @@ var dataTable = $('#leaderboard-table').DataTable({
   "bFilter": false,
   "bInfo": false,
   "bPaginate": false,
+  "oLanguage": {
+    "sEmptyTable": "<br><i class='fas fa-circle-notch fa-spin'></i>"
+  },
   columnDefs: [
     {
         targets: ['_all'],
@@ -108,7 +111,8 @@ var game = {
     game.state.viewLeaderBoard.on("click touch", function(e) {
       e.preventDefault();
       game.processData();      
-      // game.leaderboard(JSON.parse(localStorage.getItem("data")));      
+      $('#leaderboardModal').modal('show');
+      $(this).attr('disabled', true).addClass("disabled");     
     });
     game.state.playAgain.on("click touch", function(e) {
       e.preventDefault();
@@ -179,7 +183,7 @@ var game = {
       //end game else go to next question
       game.drawGaugeValue();
       if (game.state.questionsAnswered === game.state.numberOfQuestions) {        
-        game.processData();
+        // game.processData();
         game.endGame();        
       } else {        
         game.goToNextQuestion();        
@@ -202,7 +206,6 @@ var game = {
       },
       success: function (data) {    
         playersScore = data;  
-        check1stRequest = 1;
         $.ajax({
           url: "https://r4nkt.com/api/v1/games/XGQVPL3469/players",
           method: "GET",
@@ -212,8 +215,6 @@ var game = {
           },
           success: function (data) {    
             playersData = data;    
-            check2ndRequest = 1;
-
             let result = playersData.data.map(item => {
               let result = playersScore.data.find(item2 => item2.custom_player_id === item.custom_id)
               return [item, result]
@@ -237,7 +238,7 @@ var game = {
     }     
     dataTable.draw(); 
     dataTable.clear();
-    $('#leaderboardModal').modal('show');   
+    game.state.viewLeaderBoard.attr('disabled', false).removeClass("disabled");
   },
 
   drawGaugeValue: function() {
@@ -341,7 +342,7 @@ var game = {
   },
 
   endGame: function() {  
-    var id = md5(game.state.email.val());
+    var _id = md5(game.state.email.val()+"_"+timeStamp);
     var mData = [];
     var sData = [];
     var calculateTimeScore = game.state.timePoints * 10;
@@ -359,20 +360,6 @@ var game = {
 
       $(".time-group").fadeOut(1000).remove();
     });
-    
-    let $data =
-    [
-      {
-        id: md5(game.state.email.val()),
-        timeStamp: timeStamp.toUTCString(),
-        name: uppercaseWords(game.state.fullname.val()),
-        email: game.state.email.val(),
-        totalCorrectAnswer: game.state.correctAnswers,
-        totalQuestion: game.state.numberOfQuestions,
-        score: finalScore,
-        timeFinish: game.state.timer.text()
-      }
-    ];
 
     let customData = {
         name: uppercaseWords(game.state.fullname.val()),
@@ -385,41 +372,16 @@ var game = {
     };
 
     let playersData = {
-      custom_id: md5(game.state.email.val()),
+      // custom_id: _id,
       name: uppercaseWords(game.state.fullname.val()),        
       custom_data: JSON.stringify(customData)
     };
 
     let playersScore = {
       custom_leaderboard_id: "nexusleaderboard",
-      custom_player_id: md5(game.state.email.val()),
+      custom_player_id: _id,
       score: finalScore
     };
-
-    var jsonData;
-    if("data" in localStorage){
-      let currentData = JSON.parse(localStorage.getItem("data"));
-      mData = currentData.concat($data);
-      jsonData = localStorage.setItem("data", JSON.stringify(mData));
-    } else {
-      jsonData = localStorage.setItem("data", JSON.stringify($data));
-    }  
-
-    $.ajax({
-      url: "https://r4nkt.com/api/v1/games/XGQVPL3469/players",
-      method: "POST",
-      data: JSON.stringify(playersData),
-      contentType: "application/json",
-      cache: false,
-      beforeSend: function (xhr) {
-        xhr.setRequestHeader("Authorization", "Bearer w2YjdIYWWwC82Ye9VDIke5xPx643wFQ5toWbMw89");
-        xhr.setRequestHeader("Accept", "application/json");
-      },
-      success: function (data) {},
-      error: function (jqXHR, textStatus, errorThrown) {
-        console.log(textStatus);
-      }
-    }); 
 
     $.ajax({
       url: "https://r4nkt.com/api/v1/games/XGQVPL3469/scores",
@@ -431,7 +393,33 @@ var game = {
         xhr.setRequestHeader("Authorization", "Bearer w2YjdIYWWwC82Ye9VDIke5xPx643wFQ5toWbMw89");
         xhr.setRequestHeader("Accept", "application/json");
       },
-      success: function (data) {},
+      success: function (data) {
+        $.ajax({
+          url: "https://r4nkt.com/api/v1/games/XGQVPL3469/players/"+_id,
+          method: "PUT",
+          data: JSON.stringify(playersData),
+          contentType: "application/json",
+          cache: false,
+          tryCount : 0,
+          retryLimit : 3,
+          beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization", "Bearer w2YjdIYWWwC82Ye9VDIke5xPx643wFQ5toWbMw89");
+            xhr.setRequestHeader("Accept", "application/json");
+          },
+          success: function (data) {},
+          error: function (jqXHR, textStatus, errorThrown) {
+            if (textStatus == 'timeout') {
+              this.tryCount++;
+              if (this.tryCount <= this.retryLimit) {
+                $.ajax(this);
+                return;
+              }            
+              return;
+            }
+            console.log(textStatus);
+          }
+        });        
+      },
       error: function (jqXHR, textStatus, errorThrown) {
         console.log(textStatus);
       }
