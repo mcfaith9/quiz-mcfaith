@@ -19,15 +19,14 @@
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/dataTables.material.min.css">
 </head>
 <body id="fx-respond">  
-  <div id="container">
+  <div id="container" style="position: absolute;">
     <div id="content" class="fx-tiles">
       <div class="fx-grid fx-cf">
         <div id="welcome-div">
           <div class="text-center fx-purple" style="padding:15px;height:100vh;">
             <div class="container">
               <div class="" style="display: inline-block;">
-                <img src="assets/images/Nexus.png" width="200">
-                <h1 class="dark">Nexus Quiz</h1>
+                <img src="assets/images/nexus2.png" width="300" style="padding: 100px 0 20px 0;">
                 <h5 class="dark text-1">Welcome to the Nexus Quiz</h5>
                 <p class="dark text-1">Click Start to begin</p>
                 <div class="collapse" id="user-info-wrapper">                                    
@@ -43,8 +42,11 @@
                   <br>
                 </div>
                 <div class="collapse" id="game-rules">     
-                  <p class="dark" style="text-align:left;"><strong>1st Attempt</strong> Non-timed Practice so take your time and ensure your answers are correct</p>
-                  <p class="dark" style="text-align:left;"><strong>2nd Attempt</strong> Your second attempt is timed and scored, try to get through this as fast as possible</p>
+                  <p class="dark" style="text-align:left;">You are allowed <strong>2 attempts</strong> for this Quiz.  Good Luck!
+                  </p>
+                  <p class="dark" style="text-align:left;">Both attempts are timed and scored. Which ever attempt scores highest is uploaded to the leaderboards.
+                  </p>
+                  <p class="dark" style="text-align:left;">Good Luck!</p>
                 </div>
                 <p><a id="start-quiz" class="btn btn-dark rounded-pill" data-toggle="collapse" href="#user-info-wrapper" role="button" aria-expanded="false" aria-controls="user-info-wrapper" style="width:100%;">Start</a></p>
                 <p><a href="#game" id="start-button" class="btn btn-dark rounded-pill disabled" aria-disabled="true" style="width:100%;display:none;">Start Game</a></p>
@@ -82,7 +84,7 @@
                       <div class="game-right-col col-md-6 col-md-sm-6">
                         <div class="questions">
                           <div class="question">
-                            <p><span class="questionText">When did we change over from AQUA to Nexus?</span></p>
+                            <p><span class="number">Q 1.</span><span class="questionText">When did we change over from AQUA to Nexus?</span></p>
                             <div id="shuffle-question-1" class="answers">
                               <label><input type="checkbox" class="answer" data-i="1" data-correct="false"><span class="text">A. 1999</span></label>
                               <label><input type="checkbox" class="answer" data-i="2" data-correct="false"><span class="text">B. 2010</span></label>
@@ -91,7 +93,7 @@
                             </div>
                           </div>
                           <div class="question">
-                            <p><span class="questionText">What upgrade did Nexus get in late 2019?</span></p>
+                            <p><span class="number">Q 2.</span><span class="questionText">What upgrade did Nexus get in late 2019?</span></p>
                             <div id="shuffle-question-2" class="answers">
                               <label>
                                 <input type="checkbox" class="answer" data-i="1" data-correct="false"><span class="text">A. Changed how document permissions work</span>
@@ -108,7 +110,7 @@
                             </div>
                           </div>
                           <div class="question">
-                            <p><span class="questionText">What is DocuSign used for?</span></p>
+                            <p><span class="number">Q 3.</span><span class="questionText">What is DocuSign used for?</span></p>
                             <div id="shuffle-question-3" class="answers">
                               <label><input type="checkbox" class="answer" data-i="1" data-correct="true"><span class="text">A. Electronically signing documents within Nexus</span></label>
                               <label><input type="checkbox" class="answer" data-i="2" data-correct="false"><span class="text">B. Storing drawings in Nexus</span></label>
@@ -118,7 +120,7 @@
                           </div>
 
                           <div class="question">
-                            <p><span class="questionText">True or False? The Review and Approve workflow requires physical paper to complete.</span></p>
+                            <p><span class="number">Q 4.</span><span class="questionText">True or False? The Review and Approve workflow requires physical paper to complete.</span></p>
                             <div id="shuffle-question-3" class="answers">
                               <label><input type="checkbox" class="answer" data-i="1" data-correct="false"><span class="text">A. True</span></label>
                               <label><input type="checkbox" class="answer" data-i="2" data-correct="true"><span class="text">B. False</span></label>
@@ -126,7 +128,7 @@
                           </div>
 
                           <div class="question">
-                            <p><span class="questionText">What Nexus feature has reduced massive amounts of paper?</span></p>
+                            <p><span class="number">Q 5.</span><span class="questionText">What Nexus feature has reduced massive amounts of paper?</span></p>
                             <div id="shuffle-question-3" class="answers">
                               <label><input type="checkbox" class="answer" data-i="1" data-correct="false"><span class="text">A. CorDocs</span></label>
                               <label><input type="checkbox" class="answer" data-i="2" data-correct="false"><span class="text">B. Versioning </span></label>
@@ -136,7 +138,7 @@
                           </div>
 
                           <div class="question">
-                            <p><span class="questionText">True or False? The drawing management team were a key part of rolling out drawings in Nexus.</span></p>
+                            <p><span class="number">Q 6.</span><span class="questionText">True or False? The drawing management team were a key part of rolling out drawings in Nexus.</span></p>
                             <div id="shuffle-question-3" class="answers">
                               <label><input type="checkbox" class="answer" data-i="1" data-correct="true"><span class="text">A. True</span></label>
                               <label><input type="checkbox" class="answer" data-i="2" data-correct="false"><span class="text">B. False </span></label>
@@ -144,7 +146,7 @@
                           </div>
 
                           <div class="question">
-                            <p><span class="questionText">What process will ensure information that reaches the end user is correct?</span></p>
+                            <p><span class="number">Q 7.</span><span class="questionText">What process will ensure information that reaches the end user is correct?</span></p>
                             <div id="shuffle-question-3" class="answers">
                               <label><input type="checkbox" class="answer" data-i="1" data-correct="false"><span class="text">A. Nexus Smart View</span></label>
                               <label><input type="checkbox" class="answer" data-i="2" data-correct="true"><span class="text">B. Controlled Documents</span></label>
@@ -154,7 +156,7 @@
                           </div>
 
                           <div class="question">
-                            <p><span class="questionText">True or False? Forms and workflows saved people time and made their jobs easier.</span></p>
+                            <p><span class="number">Q 8.</span><span class="questionText">True or False? Forms and workflows saved people time and made their jobs easier.</span></p>
                             <div id="shuffle-question-3" class="answers">
                               <label><input type="checkbox" class="answer" data-i="1" data-correct="true"><span class="text">A. True</span></label>
                               <label><input type="checkbox" class="answer" data-i="2" data-correct="false"><span class="text">B. False </span></label>
@@ -162,7 +164,7 @@
                           </div>                          
 
                           <div class="question">
-                            <p><span class="questionText">What phase of Nexus is currently in development?</span></p>
+                            <p><span class="number">Q 9.</span><span class="questionText">What phase of Nexus is currently in development?</span></p>
                             <div id="shuffle-question-3" class="answers">
                               <label><input type="checkbox" class="answer" data-i="1" data-correct="false"><span class="text">A. Phase 1</span></label>
                               <label><input type="checkbox" class="answer" data-i="2" data-correct="true"><span class="text">B. Phase 2</span></label>
@@ -172,7 +174,7 @@
                           </div>
 
                           <div class="question">
-                            <p><span class="questionText">In the future, what other plugin can Nexus integrate to?</span></p>
+                            <p><span class="number">Q 10.</span><span class="questionText">In the future, what other plugin can Nexus integrate to?</span></p>
                             <div id="shuffle-question-3" class="answers">
                               <label><input type="checkbox" class="answer" data-i="1" data-correct="false"><span class="text">A. SAP Success Factors</span></label>
                               <label><input type="checkbox" class="answer" data-i="2" data-correct="false"><span class="text">B. Maximo</span></label>
@@ -187,7 +189,7 @@
                         </div>                        
                         <div id="game-end">    
                           <strong id="yourTime" style="color:#47338f;margin:0;"></strong>                      
-                          <p id="game-end-text" class="game-end-text"></p>
+                          <p id="game-end-text" class="game-end-text" style="background:#fff;"></p>
                           <p><a href="#" class="fx-btn btn btn-dark rounded-pill w-100" id="leaderboard">Leaderboard</a></p>
                           <p><a class="fx-btn btn btn-dark rounded-pill w-100" id="viewanswer" data-toggle="collapse" href="#collapsePreview" role="button" aria-expanded="false" aria-controls="collapsePreview">View Answers</a></p>
                           <p><a href="#" class="fx-btn btn btn-dark rounded-pill w-100 play-again" id="play-again">Play again</a></p>
@@ -262,6 +264,7 @@
   <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="assets/js/script.js"></script>
   <script type="text/javascript" src="assets/js/md5.min.js"></script>
+  <script type="text/javascript" src="assets/js/confetti.js"></script>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.all.min.js"></script>
   <script src="https://kit.fontawesome.com/176f5ded79.js" crossorigin="anonymous"></script>
 </body>

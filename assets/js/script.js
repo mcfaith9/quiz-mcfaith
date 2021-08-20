@@ -92,10 +92,10 @@ var game = {
       game.checkAnswer($(this));
     });
     game.state.credentialsButton.on("click touch", function(e) {
-      e.preventDefault();
+      e.preventDefault();      
       $("#start-quiz").remove();
       $("#start-button").show();
-
+      $("body,html").animate({scrollTop: "210px"},1000);
       function validateEmail(email) {
         var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
         return re.test(email);
@@ -104,12 +104,13 @@ var game = {
       $(".form-control").keyup(function(){
         if($("#fullname").val().length != 0 && validateEmail($("#emailaddress").val()) == true){
           $("#game-rules").collapse("show");
+          $("body,html").animate({scrollTop: "210px"},1000);
           $("#start-button").attr('disabled', false).removeClass("disabled");
         } else {
           $("#game-rules").collapse("hide");
           $("#start-button").attr('disabled', true).addClass("disabled");
         }
-      });
+      });      
     });
     game.state.credentialsButton.on("click touch", function(e) {
       e.preventDefault();      
@@ -156,7 +157,7 @@ var game = {
         game.startTimer(),
         setTimeout(function(){ $("#welcome-div").css("display","none"); }, 1000)      
       );
-      game.state.remainingQuestions.text("0/"+game.state.numberOfQuestions);
+      game.state.remainingQuestions.text("1/"+game.state.numberOfQuestions);
       game.state.startButton.unbind("click touch");
     }  
 
@@ -455,7 +456,7 @@ var game = {
     var nextQuestionIndex = game.state.questionsAnswered;
     var i = 1;
     var d = i += 1;
-    game.state.remainingQuestions.text(game.state.questionsAnswered+"/"+game.state.numberOfQuestions);
+    game.state.remainingQuestions.text(game.state.questionsAnswered+1+"/"+game.state.numberOfQuestions);
     $(game.state.questions[lastQuestionIndex]).fadeOut(400, function() {
       $(game.state.questions[nextQuestionIndex]).fadeIn(200);
     });
@@ -488,6 +489,16 @@ var game = {
 
       $(".time-group").fadeOut(1000).remove();
     });
+
+    var startTime = new Date().getTime();
+    var interval = setInterval(function(){
+        if(new Date().getTime() - startTime > 10000){
+            clearInterval(interval);
+            stopConfetti();
+            return;
+        }
+        startConfetti()
+    }, 1000); 
 
     localStorage.setItem('attempts', game.state.attempts);
 

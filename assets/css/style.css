@@ -132,7 +132,8 @@ color: #47338f;
 .answers label {
 display: block;
 border-bottom: 4px solid transparent;
-margin: 0 0 .4rem;
+/*margin: 0 0 .4rem;*/
+font-size: 18px;
 }
 .answers label.correct .text {
 border-bottom: 4px solid #1fca23;
