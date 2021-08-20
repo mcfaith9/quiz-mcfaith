@@ -8,6 +8,10 @@ html, body {
   display: block!important;
 }
 
+.swal2-title {
+  color: #212529!important;
+}
+
 .fa, .fas {
   font-size: 20px;
 }

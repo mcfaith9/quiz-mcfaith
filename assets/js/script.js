@@ -79,6 +79,7 @@ var game = {
     score: 0,
     ranking: 0,
     peoplePlayed: 0,
+    attempts: 1,
   },
 
   init: function() {
@@ -142,20 +143,125 @@ var game = {
   },
 
   start: function() {
-    game.state.gameContainer.addClass("show");
-    $("html, body").animate(
-      {
-        scrollTop: game.state.gameContainer.offset().top - 10
-      },
-      400,
-      game.startTimer(),
-      setTimeout(function(){ $("#welcome-div").css("display","none"); }, 1000)      
-    );
-
     localStorage.removeItem("_pID");
-    localStorage.setItem("_pID", md5(game.state.email.val()+"_"+timeStamp));
-    game.state.remainingQuestions.text("0/"+game.state.numberOfQuestions);
-    game.state.startButton.unbind("click touch");
+    localStorage.setItem("_pID", md5(game.state.email.val()));  
+
+    function showGame() {
+      game.state.gameContainer.addClass("show");
+      $("html, body").animate(
+        {
+          scrollTop: game.state.gameContainer.offset().top - 10
+        },
+        400,
+        game.startTimer(),
+        setTimeout(function(){ $("#welcome-div").css("display","none"); }, 1000)      
+      );
+      game.state.remainingQuestions.text("0/"+game.state.numberOfQuestions);
+      game.state.startButton.unbind("click touch");
+    }  
+
+    if(localStorage.getItem('attempts') == 1) {
+      let validationInterval;
+      var swal = Swal.fire({
+        title: 'It looks like this is your 2nd attempts',
+        html: "Please wait while system is checking.",
+        icon: "info",
+        didOpen: () => {
+          Swal.showLoading();
+          $.ajax({
+            url: game.state.APIEndpoint+game.state.gameID+"/leaderboards/nexusleaderboard/players/"+localStorage.getItem('_pID')+"/rankings",
+            method: "GET",
+            tryCount : 0,
+            retryLimit : 3,
+            beforeSend: function (xhr) {
+              xhr.setRequestHeader("Authorization", "Bearer w2YjdIYWWwC82Ye9VDIke5xPx643wFQ5toWbMw89");
+              xhr.setRequestHeader("Accept", "application/json");
+            },
+            success: function (data) {
+              var dataRank = data.data.rank;
+              var prevRank;
+
+              if(dataRank == 1) {
+                prevRank = "<i class='fas fa-medal' style='color:gold!important;'></i> "+dataRank;
+              } else if(dataRank == 2) {
+                prevRank = "<i class='fas fa-medal' style='color:silver!important;'></i> "+dataRank;
+              } else if(dataRank == 3) {
+                prevRank = "<i class='fas fa-medal' style='color:#CD7F32!important;'></i> "+dataRank;
+              } else {
+                prevRank = dataRank;
+              }
+
+              Swal.fire({
+                title: "This is your last attempts",
+                html:'Your previous is <span class="score">'+data.data.score+'</span>, ' +
+                  'and placed <span class="score" style="font-size:24px;">' +prevRank+'</span> global.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: "#212529",
+                cancelButtonColor: "#212529",
+                confirmButtonText: "Start Quiz",
+                customClass: {
+                  confirmButton: "rounded-pill",
+                  cancelButton: "rounded-pill"
+                }
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  game.state.attempts = 2;
+                  localStorage.setItem('attempts', 2);
+                  showGame();
+                } else {
+                  window.location.reload(true);
+                }
+              });
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+              if (textStatus == 'timeout') {
+                this.tryCount++;
+                if (this.tryCount <= this.retryLimit) {
+                  $.ajax(this);
+                  return;
+                }            
+                return;
+              } else if(jqXHR.status==404) {
+                SweetAlert.close();
+                Swal.fire({
+                  title: 'You are able to proceed',
+                  text: "Are you ready to Quiz",
+                  icon: 'success',
+                  showCancelButton: true,
+                  confirmButtonColor: "#212529",
+                  cancelButtonColor: "#212529",
+                  confirmButtonText: "Start Quiz",
+                  customClass: {
+                    confirmButton: "rounded-pill",
+                    cancelButton: "rounded-pill"
+                  }
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    showGame();
+                  } else {
+                    window.location.reload(true);
+                  }
+                });                
+              }
+            }
+          });
+        }
+      }).then((result) => {
+        if (result.dismiss === Swal.DismissReason.timer) {
+          console.log('I was closed by the timer');
+        }
+      });
+    } else if (localStorage.getItem('attempts') == 2) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'You runout of attempts',
+      });
+    } 
+    else {
+      showGame();
+    }      
   },
 
   startTimer: function() {
@@ -201,31 +307,7 @@ var game = {
     window.setTimeout(function() {
       game.drawGaugeValue();
       if (game.state.questionsAnswered === game.state.numberOfQuestions) { 
-        // $.ajax({
-        //     url: game.state.APIEndpoint+game.state.gameID+"/leaderboards/nexusleaderboard/players/"+localStorage.getItem('_pID')+"/rankings",
-        //     method: "GET",
-        //     tryCount : 0,
-        //     retryLimit : 3,
-        //     beforeSend: function (xhr) {
-        //       xhr.setRequestHeader("Authorization", "Bearer w2YjdIYWWwC82Ye9VDIke5xPx643wFQ5toWbMw89");
-        //       xhr.setRequestHeader("Accept", "application/json");
-        //     },
-        //     success: function (data) {
-        //       console.log(data);
-        //     },
-        //     error: function (jqXHR, textStatus, errorThrown) {
-        //       if (textStatus == 'timeout') {
-        //         this.tryCount++;
-        //         if (this.tryCount <= this.retryLimit) {
-        //           $.ajax(this);
-        //           return;
-        //         }            
-        //         return;
-        //       }
-        //       console.log(textStatus);
-        //     }
-        //   }); 
-          game.endGame();      
+        game.endGame();      
       } else {        
         game.goToNextQuestion();        
       }
@@ -254,11 +336,13 @@ var game = {
           },
           success: function (data) {    
             playersData = data;    
+            var processData = [];
             let result = playersData.data.map(item => {
               let result = playersScore.data.find(item2 => item2.custom_player_id === item.custom_id)
               return [item, result]
-            });             
-            var processData = [];  
+            });                         
+              
+            console.log(result);
             for (var i = 0, len = result.length; i < len; i++) {  
               processData.push({
                 rank: Math.abs(result[i][1].rank)+1,
@@ -388,7 +472,7 @@ var game = {
   endGame: function() {      
     var mData = [];
     var sData = [];
-    var _id = localStorage.getItem('_pID');
+    var _id = localStorage.getItem('_pID');   
     var calculateTimeScore = game.state.timePoints * 10;
     var finalScore = game.state.score + calculateTimeScore; 
     var finishedTime = 'Your Time '+ game.state.timer.text();
@@ -404,6 +488,8 @@ var game = {
 
       $(".time-group").fadeOut(1000).remove();
     });
+
+    localStorage.setItem('attempts', game.state.attempts);
 
     let customData = {
       name: uppercaseWords(game.state.fullname.val()),
