@@ -68,9 +68,9 @@ var game = {
     numberOfQuestions: $(".question").length,
     fullname: $("#fullname"),
     email: $("#emailaddress"),
-    APIToken: "w2YjdIYWWwC82Ye9VDIke5xPx643wFQ5toWbMw89",
-    gameID: "XGQVPL3469",
-    leaderboardId: "nexusleaderboard",
+    APIToken: "qR2cNqQPUqrmIM0fcuOqfETJZ6FQh06JGpyjqk3A",
+    gameID: "7EXV2EGYNM",
+    leaderboardId: "nexusQ_agik_leaderboard",
     APIEndpoint: "https://r4nkt.com/api/v1/games/",
     questionsAnswered: 0,
     correctAnswers: 0,
@@ -170,12 +170,12 @@ var game = {
         didOpen: () => {
           Swal.showLoading();
           $.ajax({
-            url: game.state.APIEndpoint+game.state.gameID+"/leaderboards/nexusleaderboard/players/"+localStorage.getItem('_pID')+"/rankings",
+            url: game.state.APIEndpoint+game.state.gameID+"/leaderboards/nexusQ_agik_leaderboard/players/"+localStorage.getItem('_pID')+"/rankings",
             method: "GET",
             tryCount : 0,
             retryLimit : 3,
             beforeSend: function (xhr) {
-              xhr.setRequestHeader("Authorization", "Bearer w2YjdIYWWwC82Ye9VDIke5xPx643wFQ5toWbMw89");
+              xhr.setRequestHeader("Authorization", "Bearer qR2cNqQPUqrmIM0fcuOqfETJZ6FQh06JGpyjqk3A");
               xhr.setRequestHeader("Accept", "application/json");
             },
             success: function (data) {
@@ -320,19 +320,19 @@ var game = {
     let playersScore;
     let playersData;  
     $.ajax({
-      url: "https://r4nkt.com/api/v1/games/XGQVPL3469/leaderboards/nexusleaderboard/rankings",
+      url: "https://r4nkt.com/api/v1/games/7EXV2EGYNM/leaderboards/nexusQ_agik_leaderboard/rankings",
       method: "GET",
       beforeSend: function (xhr) {
-        xhr.setRequestHeader("Authorization", "Bearer w2YjdIYWWwC82Ye9VDIke5xPx643wFQ5toWbMw89");
+        xhr.setRequestHeader("Authorization", "Bearer qR2cNqQPUqrmIM0fcuOqfETJZ6FQh06JGpyjqk3A");
         xhr.setRequestHeader("Accept", "application/json");
       },
       success: function (data) {    
         playersScore = data;  
         $.ajax({
-          url: "https://r4nkt.com/api/v1/games/XGQVPL3469/players",
+          url: "https://r4nkt.com/api/v1/games/7EXV2EGYNM/players",
           method: "GET",
           beforeSend: function (xhr) {
-            xhr.setRequestHeader("Authorization", "Bearer w2YjdIYWWwC82Ye9VDIke5xPx643wFQ5toWbMw89");
+            xhr.setRequestHeader("Authorization", "Bearer qR2cNqQPUqrmIM0fcuOqfETJZ6FQh06JGpyjqk3A");
             xhr.setRequestHeader("Accept", "application/json");
           },
           success: function (data) {    
@@ -518,24 +518,24 @@ var game = {
     };
 
     let playersScore = {
-      custom_leaderboard_id: "nexusleaderboard",
+      custom_leaderboard_id: "nexusQ_agik_leaderboard",
       custom_player_id: _id,
       score: finalScore
     };
 
     $.ajax({
-      url: "https://r4nkt.com/api/v1/games/XGQVPL3469/scores",
+      url: "https://r4nkt.com/api/v1/games/7EXV2EGYNM/scores",
       method: "POST",
       data: JSON.stringify(playersScore),
       contentType: "application/json",
       cache: false,
       beforeSend: function (xhr) {
-        xhr.setRequestHeader("Authorization", "Bearer w2YjdIYWWwC82Ye9VDIke5xPx643wFQ5toWbMw89");
+        xhr.setRequestHeader("Authorization", "Bearer qR2cNqQPUqrmIM0fcuOqfETJZ6FQh06JGpyjqk3A");
         xhr.setRequestHeader("Accept", "application/json");
       },
       success: function (data) {
         $.ajax({
-          url: "https://r4nkt.com/api/v1/games/XGQVPL3469/players/"+_id,
+          url: "https://r4nkt.com/api/v1/games/7EXV2EGYNM/players/"+_id,
           method: "PUT",
           data: JSON.stringify(playersData),
           contentType: "application/json",
@@ -543,7 +543,7 @@ var game = {
           tryCount : 0,
           retryLimit : 3,
           beforeSend: function (xhr) {
-            xhr.setRequestHeader("Authorization", "Bearer w2YjdIYWWwC82Ye9VDIke5xPx643wFQ5toWbMw89");
+            xhr.setRequestHeader("Authorization", "Bearer qR2cNqQPUqrmIM0fcuOqfETJZ6FQh06JGpyjqk3A");
             xhr.setRequestHeader("Accept", "application/json");
           },
           success: function (data) {},

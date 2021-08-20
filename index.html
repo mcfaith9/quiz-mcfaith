@@ -32,7 +32,7 @@
                 <div class="collapse" id="user-info-wrapper">                                    
                   <div class="form-group">
                     <p class="dark">Before starting the quiz you must enter your Full Name and your valid Email Address</p>
-                    <input type="text" class="form-control" id="fullname" placeholder="Full Name" required>
+                    <input type="text" class="form-control" id="fullname" placeholder="Full Name" onkeypress="return (event.charCode > 64 && event.charCode < 91) || (event.charCode > 96 && event.charCode < 123)" required>
                   </div>
                   <br>
                   <div class="form-group">
@@ -42,7 +42,7 @@
                   <br>
                 </div>
                 <div class="collapse" id="game-rules">     
-                  <p class="dark" style="text-align:left;">You are allowed <strong>2 attempts</strong> for this Quiz.  Good Luck!
+                  <p class="dark" style="text-align:left;">You are allowed <strong>2 attempts</strong> for this Quiz.
                   </p>
                   <p class="dark" style="text-align:left;">Both attempts are timed and scored. Which ever attempt scores highest is uploaded to the leaderboards.
                   </p>
