@@ -31,8 +31,9 @@ var dataTable = $('#leaderboard-table').DataTable({
     {data: 'name'},
     {data: 'score'},
   ],  
-  "oLanguage": {
-    "sEmptyTable": "<br><i class='fas fa-circle-notch fa-spin'></i>"
+  "processing": true,
+  "language": {
+    "processing": "<br><i class='fas fa-circle-notch fa-spin'></i>"
   },
   columnDefs: [
     {
@@ -68,6 +69,10 @@ var game = {
     numberOfQuestions: $(".question").length,
     fullname: $("#fullname"),
     email: $("#emailaddress"),
+    // For test only
+    // APIToken: "ApwrpuOGwycNRJYLQTeFNS3MG2dQ5trDtwEIQRFI",
+    // gameID: "K1JV3864X5",
+    // leaderboardId: "nexusleaderboard",
     APIToken: "qR2cNqQPUqrmIM0fcuOqfETJZ6FQh06JGpyjqk3A",
     gameID: "7EXV2EGYNM",
     leaderboardId: "nexusQ_agik_leaderboard",
@@ -100,7 +105,7 @@ var game = {
       e.preventDefault();      
       $("#start-quiz").remove();
       $("#start-button").show();
-      $("body,html").animate({scrollTop: "210px"},1000);
+      $("body,html").animate({scrollTop: "250px"},200);
 
       function validateEmail(email) {
         var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
@@ -110,7 +115,7 @@ var game = {
       $(".form-control").keyup(function(){
         if($("#fullname").val().length != 0 && validateEmail($("#emailaddress").val()) == true){
           $("#game-rules").collapse("show");
-          $("body,html").animate({scrollTop: "210px"},1000);
+          $("body,html").animate({scrollTop: "310px"},200);
           $("#start-button").attr('disabled', false).removeClass("disabled");
         } else {
           $("#game-rules").collapse("hide");
@@ -161,7 +166,7 @@ var game = {
         },
         400,
         game.startTimer(),
-        setTimeout(function(){ $("#welcome-div").css("display","none"); }, 1000)      
+        setTimeout(function(){ $("#welcome-div").css("display","none"); }, 0)      
       );
       game.state.remainingQuestions.text("1/"+game.state.numberOfQuestions);
       game.state.startButton.unbind("click touch");
@@ -177,7 +182,7 @@ var game = {
         didOpen: () => {
           Swal.showLoading();
           $.ajax({
-            url: game.state.APIEndpoint+game.state.gameID+"/leaderboards/nexusQ_agik_leaderboard/players/"+localStorage.getItem('_pID')+"/rankings",
+            url: game.state.APIEndpoint+game.state.gameID+"/leaderboards/"+game.state.leaderboardId+"/players/"+localStorage.getItem('_pID')+"/rankings",
             method: "GET",
             tryCount : 0,
             retryLimit : 3,
@@ -305,7 +310,7 @@ var game = {
     let playersScore;
     let playersData;  
     $.ajax({
-      url: "https://r4nkt.com/api/v1/games/"+game.state.gameID+"/leaderboards/nexusQ_agik_leaderboard/rankings",
+      url: "https://r4nkt.com/api/v1/games/"+game.state.gameID+"/leaderboards/"+game.state.leaderboardId+"/rankings",
       method: "GET",
       beforeSend: function (xhr) {
         xhr.setRequestHeader("Authorization", "Bearer "+game.state.APIToken);
@@ -328,7 +333,6 @@ var game = {
               return [item, result]
             });                         
               
-            console.log(result);
             for (var i = 0, len = result.length; i < len; i++) {  
               processData.push({
                 rank: Math.abs(result[i][1].rank)+1,
@@ -345,7 +349,7 @@ var game = {
           error: function (jqXHR, textStatus, errorThrown) {
             console.log(textStatus);
           }
-        });
+        });    
       },
       error: function (jqXHR, textStatus, errorThrown) {
         console.log(textStatus);
@@ -358,9 +362,11 @@ var game = {
     dataTable.columns.adjust().draw();       
   },  
   preLeaderBoard: function() {
-    dataTable.clear().draw();
-    dataTable.rows.add(JSON.parse(localStorage.getItem('dataTablesData'))).draw();       
-    dataTable.columns.adjust().draw();
+    if(localStorage.getItem('dataTablesData') != null) {
+      dataTable.clear().draw();
+      dataTable.rows.add(JSON.parse(localStorage.getItem('dataTablesData'))).draw();       
+      dataTable.columns.adjust().draw();
+    }    
   },
   drawGaugeValue: function() {
     var currentValue =
@@ -488,9 +494,9 @@ var game = {
     var startTime = new Date().getTime();
     var interval = setInterval(function(){
         if(new Date().getTime() - startTime > 10000){
-            clearInterval(interval);
-            stopConfetti();
-            return;
+          clearInterval(interval);
+          stopConfetti();
+          return;
         }
         startConfetti()
     }, 1000); 

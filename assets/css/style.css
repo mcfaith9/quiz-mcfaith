@@ -4,6 +4,57 @@ html, body {
   transition: color 1s ease;
   transition: background 1s ease;
 }
+
+input[type="checkbox"] {
+  visibility:hidden;
+  position:relative;
+  font:inherit;
+  color:inherit;
+  margin:0.4em;
+  cursor:pointer;
+}
+
+input[type="checkbox"]:before,
+input[type="checkbox"]:after {
+  content:"";
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
+  visibility:visible;
+  width:1em;
+  height:1em;
+  box-sizing:border-box;
+}
+
+input[type="checkbox"]:before {
+  border-radius:1em;
+  border:3px solid #f0f0f0;
+  transition:border 0.1s ease-out;
+}
+  
+input[type="checkbox"].red:before {border-color:#ff605f;}
+input[type="checkbox"].green:before {border-color:#96d100;}
+input[type="checkbox"].blue:before {border-color:#0078ad;}
+input[type="checkbox"].purple:before {border-color:#47338f;}
+input[type="checkbox"].orange:before {border-color:orange;}
+  
+input[type="checkbox"]:checked:before {border-width:0.8em;}
+     
+
+input[type="checkbox"]:after {
+  content:"✓";
+  text-align:center;
+  line-height:1em;
+  font-weight:bolder;
+  overflow:hidden;
+  opacity:0;
+  color:#fff;
+  transition:opacity 0.1s ease-in;
+}
+
+input[type="checkbox"]:checked:after {opacity:1;}
+
 .pagination {
   text-align: center!important;
   align-items: center!important;
@@ -134,7 +185,7 @@ color: #47338f;
 .answers label {
 display: block;
 border-bottom: 4px solid transparent;
-/*margin: 0 0 .4rem;*/
+margin: 0 0 .4rem;
 font-size: 18px;
 }
 .answers label.correct .text {
