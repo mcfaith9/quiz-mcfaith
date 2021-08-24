@@ -55,6 +55,10 @@ input[type="checkbox"]:after {
 
 input[type="checkbox"]:checked:after {opacity:1;}
 
+.dataTables_empty{
+  padding: 20px;
+}
+
 .pagination {
   text-align: center!important;
   align-items: center!important;
