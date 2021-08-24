@@ -85,6 +85,11 @@ var game = {
   init: function() {
     game.registerEventHandlers();
     game.processData();
+    if(localStorage.getItem('attempts') == 1 || localStorage.getItem('attempts') == 2) {
+      $("#start-quiz").hide();
+      $("#start-button").show();
+      $("#start-button").attr('disabled', false).removeClass("disabled");
+    } 
   },
 
   registerEventHandlers: function() {
@@ -96,6 +101,7 @@ var game = {
       $("#start-quiz").remove();
       $("#start-button").show();
       $("body,html").animate({scrollTop: "210px"},1000);
+
       function validateEmail(email) {
         var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
         return re.test(email);
@@ -111,10 +117,6 @@ var game = {
           $("#start-button").attr('disabled', true).addClass("disabled");
         }
       });      
-    });
-    game.state.credentialsButton.on("click touch", function(e) {
-      e.preventDefault();      
-      $(".text-1").css('display', 'none');
     });
     game.state.startButton.on("click touch", function(e) {
       e.preventDefault();      
@@ -144,8 +146,12 @@ var game = {
   },
 
   start: function() {
-    localStorage.removeItem("_pID");
-    localStorage.setItem("_pID", md5(game.state.email.val()));  
+    if(localStorage.getItem("_pName") == null && localStorage.getItem("_pEmail") == null && localStorage.getItem("_pID") == null) {    
+      localStorage.removeItem("_pID");  
+      localStorage.setItem("_pID", md5(game.state.email.val()));  
+      localStorage.setItem("_pName", game.state.fullname.val()); 
+      localStorage.setItem("_pEmail", game.state.email.val());
+    }
 
     function showGame() {
       game.state.gameContainer.addClass("show");
@@ -167,6 +173,7 @@ var game = {
         title: 'It looks like this is your 2nd attempts',
         html: "Please wait while system is checking.",
         icon: "info",
+        timerProgressBar: true,
         didOpen: () => {
           Swal.showLoading();
           $.ajax({
@@ -175,11 +182,11 @@ var game = {
             tryCount : 0,
             retryLimit : 3,
             beforeSend: function (xhr) {
-              xhr.setRequestHeader("Authorization", "Bearer qR2cNqQPUqrmIM0fcuOqfETJZ6FQh06JGpyjqk3A");
+              xhr.setRequestHeader("Authorization", "Bearer "+game.state.APIToken);
               xhr.setRequestHeader("Accept", "application/json");
             },
             success: function (data) {
-              var dataRank = data.data.rank;
+              var dataRank = data.data.rank+1;
               var prevRank;
 
               if(dataRank == 1) {
@@ -207,8 +214,7 @@ var game = {
                 }
               }).then((result) => {
                 if (result.isConfirmed) {
-                  game.state.attempts = 2;
-                  localStorage.setItem('attempts', 2);
+                  game.state.attempts = 2;                  
                   showGame();
                 } else {
                   window.location.reload(true);
@@ -223,34 +229,11 @@ var game = {
                   return;
                 }            
                 return;
-              } else if(jqXHR.status==404) {
-                SweetAlert.close();
-                Swal.fire({
-                  title: 'You are able to proceed',
-                  text: "Are you ready to Quiz",
-                  icon: 'success',
-                  showCancelButton: true,
-                  confirmButtonColor: "#212529",
-                  cancelButtonColor: "#212529",
-                  confirmButtonText: "Start Quiz",
-                  customClass: {
-                    confirmButton: "rounded-pill",
-                    cancelButton: "rounded-pill"
-                  }
-                }).then((result) => {
-                  if (result.isConfirmed) {
-                    showGame();
-                  } else {
-                    window.location.reload(true);
-                  }
-                });                
+              } else if(jqXHR.status == 404) {
+                window.location.reload(true);
               }
             }
           });
-        }
-      }).then((result) => {
-        if (result.dismiss === Swal.DismissReason.timer) {
-          console.log('I was closed by the timer');
         }
       });
     } else if (localStorage.getItem('attempts') == 2) {
@@ -279,9 +262,10 @@ var game = {
       var sec = zeroFill(Math.floor(centisecondsRemaining / 100 % 60));
       var cs = zeroFill(centisecondsRemaining % 100);
       game.state.timer.text(min + ":" + sec + ":" + cs);      
-      count++;
+      count++;         
+
       if (centisecondsRemaining === 0) {
-        clearInterval(interval);
+        clearInterval(interval);     
         game.timesUp();
       }
       if (game.state.questionsAnswered === game.state.numberOfQuestions) {
@@ -290,6 +274,7 @@ var game = {
       if (game.state.questionsAnswered === game.state.numberOfQuestions) {
         clearInterval(interval);
       }      
+
       game.state.timePoints = min * 60 + sec;
     }, 10);    
   },
@@ -320,19 +305,19 @@ var game = {
     let playersScore;
     let playersData;  
     $.ajax({
-      url: "https://r4nkt.com/api/v1/games/7EXV2EGYNM/leaderboards/nexusQ_agik_leaderboard/rankings",
+      url: "https://r4nkt.com/api/v1/games/"+game.state.gameID+"/leaderboards/nexusQ_agik_leaderboard/rankings",
       method: "GET",
       beforeSend: function (xhr) {
-        xhr.setRequestHeader("Authorization", "Bearer qR2cNqQPUqrmIM0fcuOqfETJZ6FQh06JGpyjqk3A");
+        xhr.setRequestHeader("Authorization", "Bearer "+game.state.APIToken);
         xhr.setRequestHeader("Accept", "application/json");
       },
       success: function (data) {    
         playersScore = data;  
         $.ajax({
-          url: "https://r4nkt.com/api/v1/games/7EXV2EGYNM/players",
+          url: "https://r4nkt.com/api/v1/games/"+game.state.gameID+"/players",
           method: "GET",
           beforeSend: function (xhr) {
-            xhr.setRequestHeader("Authorization", "Bearer qR2cNqQPUqrmIM0fcuOqfETJZ6FQh06JGpyjqk3A");
+            xhr.setRequestHeader("Authorization", "Bearer "+game.state.APIToken);
             xhr.setRequestHeader("Accept", "application/json");
           },
           success: function (data) {    
@@ -470,15 +455,25 @@ var game = {
     });
   },
 
-  endGame: function() {      
+  endGame: function() { 
+    var name;
+    var email;     
     var mData = [];
     var sData = [];
-    var _id = localStorage.getItem('_pID');   
+    var _id = localStorage.getItem("_pID");    
+    if(localStorage.getItem('attempts') == 1) {
+      name = localStorage.getItem("_pName"); 
+      email = localStorage.getItem("_pEmail");
+    } else {
+      name = uppercaseWords(game.state.fullname.val());
+      email = game.state.email.val();
+    }
+
     var calculateTimeScore = game.state.timePoints * 10;
     var finalScore = game.state.score + calculateTimeScore; 
     var finishedTime = 'Your Time '+ game.state.timer.text();
     var endText =
-      uppercaseWords(game.state.fullname.val())+', you answered <span class="score">'+game.state.correctAnswers+' of '+game.state.numberOfQuestions+"</span> questions correctly."+
+      name+', you answered <span class="score">'+game.state.correctAnswers+' of '+game.state.numberOfQuestions+"</span> questions correctly."+
       "<br> You have earned <span class='score'>"+finalScore+"</span> points.";
 
       game.state.questionsView.fadeOut(400, function() {
@@ -503,8 +498,8 @@ var game = {
     localStorage.setItem('attempts', game.state.attempts);
 
     let customData = {
-      name: uppercaseWords(game.state.fullname.val()),
-      email: game.state.email.val(),
+      name: name,
+      email: email,
       totalCorrectAnswer: game.state.correctAnswers,
       totalQuestion: game.state.numberOfQuestions,
       score: finalScore,
@@ -513,7 +508,7 @@ var game = {
     };
 
     let playersData = {
-      name: uppercaseWords(game.state.fullname.val()),        
+      name: name,        
       custom_data: JSON.stringify(customData)
     };
 
@@ -524,18 +519,18 @@ var game = {
     };
 
     $.ajax({
-      url: "https://r4nkt.com/api/v1/games/7EXV2EGYNM/scores",
+      url: "https://r4nkt.com/api/v1/games/"+game.state.gameID+"/scores",
       method: "POST",
       data: JSON.stringify(playersScore),
       contentType: "application/json",
       cache: false,
       beforeSend: function (xhr) {
-        xhr.setRequestHeader("Authorization", "Bearer qR2cNqQPUqrmIM0fcuOqfETJZ6FQh06JGpyjqk3A");
+        xhr.setRequestHeader("Authorization", "Bearer "+game.state.APIToken);
         xhr.setRequestHeader("Accept", "application/json");
       },
       success: function (data) {
         $.ajax({
-          url: "https://r4nkt.com/api/v1/games/7EXV2EGYNM/players/"+_id,
+          url: "https://r4nkt.com/api/v1/games/"+game.state.gameID+"/players/"+_id,
           method: "PUT",
           data: JSON.stringify(playersData),
           contentType: "application/json",
@@ -543,7 +538,7 @@ var game = {
           tryCount : 0,
           retryLimit : 3,
           beforeSend: function (xhr) {
-            xhr.setRequestHeader("Authorization", "Bearer qR2cNqQPUqrmIM0fcuOqfETJZ6FQh06JGpyjqk3A");
+            xhr.setRequestHeader("Authorization", "Bearer "+game.state.APIToken);
             xhr.setRequestHeader("Accept", "application/json");
           },
           success: function (data) {},

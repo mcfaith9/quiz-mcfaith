@@ -6,7 +6,7 @@
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
   <meta http-equiv="Cache-control" content="no-cache"/>
   <meta http-equiv="pragma" content="no-cache"/>
-  <title>Quiz</title>
+  <title>NexusQuiz</title>
 
   <link rel="apple-touch-icon" sizes="180x180" href="assets/images/fav/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/images/fav/favicon-32x32.png">
@@ -19,7 +19,7 @@
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/dataTables.material.min.css">
 </head>
 <body id="fx-respond">  
-  <div id="container" style="position: absolute;">
+  <div id="container" style="position:absolute;margin:0;top:0;left:0;right:0;bottom:0;">
     <div id="content" class="fx-tiles">
       <div class="fx-grid fx-cf">
         <div id="welcome-div">
@@ -32,7 +32,7 @@
                 <div class="collapse" id="user-info-wrapper">                                    
                   <div class="form-group">
                     <p class="dark">Before starting the quiz you must enter your Full Name and your valid Email Address</p>
-                    <input type="text" class="form-control" id="fullname" placeholder="Full Name" onkeypress="return (event.charCode > 64 && event.charCode < 91) || (event.charCode > 96 && event.charCode < 123)" required>
+                    <input type="text" class="form-control" id="fullname" placeholder="Full Name" onkeypress="return (event.charCode > 64 && event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.keyCode == 8) || (event.keyCode == 32)" required>
                   </div>
                   <br>
                   <div class="form-group">
@@ -120,7 +120,7 @@
                           </div>
 
                           <div class="question">
-                            <p><span class="number">Q 4.</span><span class="questionText">True or False? The Review and Approve workflow requires physical paper to complete.</span></p>
+                            <p><span class="number">Q 4.</span><span class="questionText">True or False? The Review and Approval workflow requires physical paper to complete.</span></p>
                             <div id="shuffle-question-3" class="answers">
                               <label><input type="checkbox" class="answer" data-i="1" data-correct="false"><span class="text">A. True</span></label>
                               <label><input type="checkbox" class="answer" data-i="2" data-correct="true"><span class="text">B. False</span></label>
@@ -150,13 +150,13 @@
                             <div id="shuffle-question-3" class="answers">
                               <label><input type="checkbox" class="answer" data-i="1" data-correct="false"><span class="text">A. Nexus Smart View</span></label>
                               <label><input type="checkbox" class="answer" data-i="2" data-correct="true"><span class="text">B. Controlled Documents</span></label>
-                              <label><input type="checkbox" class="answer" data-i="3" data-correct="false"><span class="text">B. Drawings</span></label>
-                              <label><input type="checkbox" class="answer" data-i="4" data-correct="false"><span class="text">B. Nexus Phase 1</span></label>
+                              <label><input type="checkbox" class="answer" data-i="3" data-correct="false"><span class="text">C. Drawings</span></label>
+                              <label><input type="checkbox" class="answer" data-i="4" data-correct="false"><span class="text">D. Nexus Phase 1</span></label>
                             </div>
                           </div>
 
                           <div class="question">
-                            <p><span class="number">Q 8.</span><span class="questionText">True or False? Forms and workflows saved people time and made their jobs easier.</span></p>
+                            <p><span class="number">Q 8.</span><span class="questionText">True or False? Forms and workflows save people time and make their jobs easier.</span></p>
                             <div id="shuffle-question-3" class="answers">
                               <label><input type="checkbox" class="answer" data-i="1" data-correct="true"><span class="text">A. True</span></label>
                               <label><input type="checkbox" class="answer" data-i="2" data-correct="false"><span class="text">B. False </span></label>

@@ -1,6 +1,8 @@
 html, body {
   overflow-x: hidden;
   margin-top: 0px;
+  transition: color 1s ease;
+  transition: background 1s ease;
 }
 .pagination {
   text-align: center!important;
@@ -122,7 +124,7 @@ display: none;
 display: block;
 }
 .question p {
-font-size: 23px;
+font-size: 22px;
 color: #47338f;
 }
 .question .number {
