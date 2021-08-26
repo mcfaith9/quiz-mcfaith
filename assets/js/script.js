@@ -280,7 +280,7 @@ var game = {
         clearInterval(interval);
       }      
 
-      game.state.timePoints = min * 60 + sec;
+      game.state.timePoints = min * 60 + Number(sec);
     }, 10);    
   },
 
